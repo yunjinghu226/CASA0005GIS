@@ -1,0 +1,48 @@
+---
+title: "AssessmentPart1"
+author: "Yunjing Hu"
+date: "October 27, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## CASA0013 GIS Assessment
+
+### Part 1
+
+In this part, two maps were produced with QGIS and RStudio seperately. They are displayed here with brief descriptions about the procedures of making the maps, as well as a critical comparison of the tools used to produce them. 
+
+*Map created with QGIS
+
+This a map showing the ...
+
+![optional caption text](figures/img.png)
+
+While using QGIS, (advantages and drawbacks)
+
+*Map created with RStudio
+
+This is a map showing the ...
+
+![optional caption text](figures/img.png)
+
+First, (Code involved)
+
+```{r cars}
+summary(cars)
+```
+
+Then, (Other supporting descriptions and procedure illustrations)
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+While using RStudio, (advantages and drawbacks)
+
+*Conclusion
+
+As a brief conclusion, ...
