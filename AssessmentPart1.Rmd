@@ -19,9 +19,15 @@ In this part, two maps were produced with QGIS and RStudio seperately. They are 
 
 This a map showing the ...
 
-![optional caption text](figures/img.png)
+![Thematic map made with QGIS](QGIS_Map.jpg)
+
+Steps including ...
 
 While using QGIS, (advantages and drawbacks)
+
+when adding basemap
+refer to tutorial: https://opengislab.com/blog/2018/4/15/add-basemaps-in-qgis-30
+used python script: https://raw.githubusercontent.com/klakar/QGIS_resources/master/collections/Geosupportsystem/python/qgis_basemaps.py
 
 *Map created with RStudio
 
