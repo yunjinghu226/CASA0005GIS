@@ -38,6 +38,8 @@ Base map was added through "XYZ Tiles". To load the base map options, run the py
 Lastly, the layout was generated using "Layout Manager".
 ![generate layout](layout.png)
 
+As shown in the "Data Source Manager", QGIS is capable of compiling various types of data and adding them via different pathes. This makes it convenient to work together with all kinds of open sourse databases. Besides, various plugins including python console are supported, which gives it possibility to be conneted with resources and functions of other platforms.
+
 While using QGIS to display the data, the result of visualization can be reflected immediately and adjusted accordingly to best convey the information. The color, style of lines, and style of text are directly demonstrated before being chosen to be applied to the map. Besides, it is intuitive to generate layout in a GUI-based tool because there is nested functions of adding different cartographical elements and they can be easily adjusted and moved around for the desired consequence. 
 
 * Map created with RStudio
