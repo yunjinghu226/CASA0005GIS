@@ -1,5 +1,5 @@
 ---
-title: "AssessmentPart1"
+title: "Assessment Part1"
 author: "Yunjing Hu"
 date: "October 27, 2018"
 output: html_document
@@ -47,7 +47,7 @@ While using QGIS to display the data, the result of visualization can be reflect
 Below are codes demonstrating the steps of building up an interactive map of the same theme and similar rendering style using the same data files and made with the Leaflet package in RStudio.
 
 1. Load packages
-```{r,echo=FALSE}
+```{r,echo=TRUE}
 library(tidyverse)
 library(sp)
 library(rgdal)
@@ -57,14 +57,14 @@ library(RColorBrewer)
 ```
 
 2. Read the London Borough boundary shapefile and census csv file from a local directory.
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 BoroughBd <- readOGR("C:/Users/alexy/Desktop/GIS/wk1/BoundaryDataEdinaCensus/england_lad_2011.shp")
 LondonData <- read.csv("C:/Users/alexy/Desktop/GIS/wk1/LondonData.csv")
 LondonData <- read_csv("C:/Users/alexy/Desktop/GIS/wk1/LondonData.csv", na = "n/a")
 ```
 
 3. Manipulate the data to get a sp feature neccessary for plotting.
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 LondonData <- data.frame(LondonData)
 LondonBoroughs <- LondonData[grep("^E09",LondonData[,3]),] # select rows of London Boroughs
 LondonBoroughs <- LondonBoroughs[,c(3,16)] # select needed columns
@@ -84,7 +84,7 @@ map%>%addProviderTiles(providers$Esri.WorldGrayCanvas)
 ```
 
 5. Set color scheme for the map.
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 bins <- c(10.3, 19.9, 31.0, 39.4, 48.2, 55.1)
 pal <- colorBin(c("#f7fbff", "#c8ddf0","#73b3d8","#2879b9","#08306b"), domain = Borough_repro$Percentage, bins = bins)
 ```
@@ -130,4 +130,5 @@ map%>%addLegend(pal = pal, values = ~Percentage, opacity = 0.7, title = "% peopl
 ```
 
 Compared to QGIS, R is more handy for data maniputaling especially for attribute data. It is easy to clean and slice neccessary data with built-in functions in R. Besides, it is much easier to manage the project when with R when it has to be revised frequently or involves group work becaused the connection with Git makes it possible to perform version control and process the work at multiple workspaces. 
+
 As for visualization, in terms of making simple thematic map, R seems not to be inferior to a GUI-based tool since those rendering features are all subject to customization through coding. Thus, what can be generated through QGIS or ArcGIS can also be rendered with R, and R can even make the map interactive. However, the code-based nature also makes R hard to use in some ways. It takes much more efforts to get to know and become familier with the tools and functions available in R since they are not directly shown anywhere. The visualization processes also takes extra time to debugging and figuring out results that each line of code will lead to.
