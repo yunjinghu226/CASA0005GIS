@@ -32,7 +32,7 @@ Next, display the data as desired through adjusting features under "Symbology" a
 
 ![adjust labels](label.png)
 
-Base map was added through "XYZ Tiles". To load the base map options, run the python script(https://raw.githubusercontent.com/klakar/QGIS_resources/master/collections/Geosupportsystem/python/qgis_basemaps.py) get from the tutorial online (https://opengislab.com/blog/2018/4/15/add-basemaps-in-qgis-30) in the "Python Console" accessed from "Plugins" menu.
+Base map was added through "XYZ Tiles". To load the base map options, run the [python script](https://raw.githubusercontent.com/klakar/QGIS_resources/master/collections/Geosupportsystem/python/qgis_basemaps.py) get from the tutorial [online](https://opengislab.com/blog/2018/4/15/add-basemaps-in-qgis-30) in the "Python Console" accessed from "Plugins" menu.
 ![add basemap](basemap.png)
 
 Lastly, the layout was generated using "Layout Manager".
@@ -44,7 +44,8 @@ While using QGIS to display the data, the result of visualization can be reflect
 
 * Map created with RStudio
 
-This is a map showing the ...
+This is an interactive map of the same theme and similar display style made with the Leaflet package in R. Procedures and codes were refered to [tutorials](https://rstudio.github.io/leaflet/).
+
 
 ![optional caption text](figures/img.png)
 
