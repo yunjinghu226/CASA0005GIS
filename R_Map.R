@@ -1,3 +1,11 @@
+# load packages
+library(tidyverse)
+library(sp)
+library(rgdal)
+library(leaflet)
+library(htmltools)
+library(RColorBrewer)
+
 # read the London Borough boundary shapefile and census csv file from a local directory
 BoroughBd <- readOGR("C:/Users/alexy/Desktop/GIS/wk1/BoundaryDataEdinaCensus/england_lad_2011.shp")
 LondonData <- read.csv("C:/Users/alexy/Desktop/GIS/wk1/LondonData.csv")
