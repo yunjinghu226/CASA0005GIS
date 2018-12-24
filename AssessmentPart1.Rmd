@@ -1,7 +1,7 @@
 ---
-title: "Assessment Part1"
+title: "GIS Assessment"
 author: "Yunjing Hu"
-date: "October 27, 2018"
+date: "January 4, 2019"
 output: html_document
 ---
 
@@ -9,58 +9,62 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## CASA0013 GIS Assessment
-
 ### Part 1
 
 In this part, two maps were produced with QGIS and RStudio seperately. They are displayed here with brief descriptions about the procedures of making the maps, as well as a critical comparison of the tools used to produce them. 
 
-* Map created with QGIS
+#### Map created with QGIS
 
 This a map showing the the percentage of people not born in London of each Borough with deeper blue indicating higher percentage. 
 
 ![Thematic map made with QGIS](QGIS_Map.jpg)
 
+
 The data was fetched from UK Data Services, with seperate london boundary shapefile and csv file of census data on population structure. To start making the map, add these two layers to QGIS through "Vector" tab and "Delimited Text" tab seperately in "Data Source Manager" accessed from the "Layer" menu.
 ![add layers](add_layer.png)
+
 
 Before joining two layers, check the attribute table of shapefile and the csv file to make sure there is a common field that can be set as the "join field". Then the csv data was joined to the boundary shapefile by going to the "join" tab in the "properties" window of the boundary layer. 
 ![join layers](join_layer.png)
 
+
 Next, display the data as desired through adjusting features under "Symbology" and "Label" tabs in the "properties" window of the boundary layer.
 ![adjust symbologies](display_data.png)
 
+
 ![adjust labels](label.png)
+
 
 Base map was added through "XYZ Tiles". To load the base map options, run the [python script](https://raw.githubusercontent.com/klakar/QGIS_resources/master/collections/Geosupportsystem/python/qgis_basemaps.py) get from the tutorial [online](https://opengislab.com/blog/2018/4/15/add-basemaps-in-qgis-30) in the "Python Console" accessed from "Plugins" menu.
 ![add basemap](basemap.png)
 
+
 Lastly, the layout was generated using "Layout Manager".
 ![generate layout](layout.png)
+
 
 As shown in the "Data Source Manager", QGIS is capable of compiling various types of data and adding them via different pathes. This makes it convenient to work together with all kinds of open sourse databases. Besides, various plugins including python console are supported, which gives it possibility to be conneted with resources and functions of other platforms.
 
 While using QGIS to display the data, the result of visualization can be reflected immediately and adjusted accordingly to best convey the information. The color, style of lines, and style of text are directly demonstrated before being chosen to be applied to the map. Besides, it is intuitive to generate layout in a GUI-based tool because there is nested functions of adding different cartographical elements and they can be easily adjusted and moved around for the desired consequence. 
 
-* Map created with RStudio
+#### Map created with RStudio
 
-Below are codes demonstrating the steps of building up an interactive map of the same theme and similar rendering style using the same data files and made with the Leaflet package in RStudio.
+Below are codes demonstrating the steps of building up an interactive map of the same theme and similar rendering style using the same data files and made with the tmap package in RStudio.
 
 1. Load packages
 ```{r,echo=TRUE}
 library(tidyverse)
 library(sp)
 library(rgdal)
-library(leaflet)
+library(shinyjs)
 library(htmltools)
 library(RColorBrewer)
 ```
 
 2. Read the London Borough boundary shapefile and census csv file from a local directory.
 ```{r, echo=TRUE}
-BoroughBd <- readOGR("C:/Users/alexy/Desktop/GIS/wk1/BoundaryDataEdinaCensus/england_lad_2011.shp")
-LondonData <- read.csv("C:/Users/alexy/Desktop/GIS/wk1/LondonData.csv")
-LondonData <- read_csv("C:/Users/alexy/Desktop/GIS/wk1/LondonData.csv", na = "n/a")
+BoroughBd <- readOGR("england_lad_2011.shp")
+LondonData <- read.csv("LondonData.csv")
 ```
 
 3. Manipulate the data to get a sp feature neccessary for plotting.
@@ -77,58 +81,19 @@ Borough_repro <-spTransform(BoroughBd, CRS("+proj=longlat +datum=WGS84")) #repro
 
 ```
 
-4. Plot the reprojected sp feature with Leaflet package and add basemap from third party tile provider.
+4. Plot the reprojected sp feature with tmap package and set to desired style.
 ```{r, echo=TRUE}
-map <- leaflet(Borough_repro)%>%setView(lng = 0, lat = 51.5, zoom = 9)
-map%>%addProviderTiles(providers$Esri.WorldGrayCanvas)
+tmap_mode("view")
+tm_shape(Borough_repro) +
+  tm_polygons("Percentage",
+              style="jenks",
+              palette=get_brewer_pal("Blues", n = 5,contrast = c(0,1)),
+              border.col = "white",
+              midpoint=NA,
+              popup.vars="Percentage",
+              title="% of people not born in London")
 ```
 
-5. Set color scheme for the map.
-```{r, echo=TRUE}
-bins <- c(10.3, 19.9, 31.0, 39.4, 48.2, 55.1)
-pal <- colorBin(c("#f7fbff", "#c8ddf0","#73b3d8","#2879b9","#08306b"), domain = Borough_repro$Percentage, bins = bins)
-```
+Compared to QGIS, R is more handy for data maniputaling especially for attribute data. It is easy to clean and slice neccessary data with built-in functions in R. Besides, it is much easier to manage the project with R when it has to be revised frequently or involves group work becaused the connection with Git makes it possible to perform version control and process the work at multiple workspaces. 
 
-6. Fill the map with desired color scheme.
-```{r, echo=TRUE}
-map%>%addPolygons(weight = 1,
-                  opacity = 1, 
-                  color = "#fff", 
-                  smoothFactor = 0.3, 
-                  fillOpacity = 1, 
-                  fillColor = ~pal(Percentage))
-# UNSOLVED ISSUE: the grey background of this layer cannot be get rid of, which covers the basemap
-```
-
-7. Add interactive features with the "highlight" argument.
-```{r, echo=TRUE}
-map%>%addPolygons(weight = 1,opacity = 1, color = "#fff", smoothFactor = 0.3, fillOpacity = 1, fillColor = ~pal(Percentage),
-                  highlight = highlightOptions(
-                    weight = 5,
-                    color = "#fff",
-                    fillOpacity = 1,
-                    bringToFront = TRUE))
-```
-
-8. Add labels with a style.
-```{r,echo=TRUE}
-labels <- sprintf("<strong>%s</strong><br/>%g percent",Borough_repro$`Borough Name`,Borough_repro$Percentage) %>% lapply(htmltools::HTML)
-
-map%>%addPolygons(weight = 1,opacity = 1, color = "#fff", smoothFactor = 0.3, fillOpacity = 1,fillColor = ~pal(Percentage),highlight = highlightOptions(weight = 5,color = "#fff",fillOpacity = 1,bringToFront = TRUE),
-                  label = labels,
-                  labelOptions = labelOptions(
-                    style = list("font-weight" = "normal", padding = "3px 8px"),
-                    textsize = "15px",
-                    direction = "auto"))
-```
-
-9. Add legend.
-```{r,echo=TRUE}
-map%>%addLegend(pal = pal, values = ~Percentage, opacity = 0.7, title = "% people not born in UK",
-                position = "bottomright")
-# UNISOLVED ISSUE: the entire map becomes grey after the legend feature is added
-```
-
-Compared to QGIS, R is more handy for data maniputaling especially for attribute data. It is easy to clean and slice neccessary data with built-in functions in R. Besides, it is much easier to manage the project when with R when it has to be revised frequently or involves group work becaused the connection with Git makes it possible to perform version control and process the work at multiple workspaces. 
-
-As for visualization, in terms of making simple thematic map, R seems not to be inferior to a GUI-based tool since those rendering features are all subject to customization through coding. Thus, what can be generated through QGIS or ArcGIS can also be rendered with R, and R can even make the map interactive. However, the code-based nature also makes R hard to use in some ways. It takes much more efforts to get to know and become familier with the tools and functions available in R since they are not directly shown anywhere. The visualization processes also takes extra time to debugging and figuring out results that each line of code will lead to.
+As for visualization, in terms of making simple thematic map, although R is capable of making interactive maps with certain packages, it seems not to be inferior to a GUI-based tool since those rendering features are all subject to customization through coding. It takes much more efforts to get to know and become familier with the tools and functions available in R since they are not directly shown anywhere. Besides, to realized the desired visualization effect, which involves in lots of detail tweaking, cartographers will need to refer to the documentations and type the code all the time. It also takes extra time to debugging and figuring out results that each line of code will lead to. 
