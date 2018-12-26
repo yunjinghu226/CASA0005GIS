@@ -30,7 +30,7 @@ tm_shape(LondonWards) +
 #run a point pattern analysis using ripley's K
 window <- as.owin(LondonWards)
 plot(window)
-TreasHunt.ppp <- ppp(x=TreasHuntPoint@lng,y=TreasHuntPoint@lat,window=window)
+TreasHunt.ppp <- ppp(x=TreasHuntPoint@coords[,1],y=TreasHuntPoint@coords[,2],window=window)
 K <- Kest(TreasHunt.ppp, correction="border")
 plot(K)
 
