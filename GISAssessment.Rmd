@@ -60,7 +60,7 @@ Below are codes demonstrating the steps of building up an interactive map of the
 
 i) Load packages
 
-```{r,echo=TRUE}
+```{r,echo=TRUE,results='hide'}
 library(tidyverse)
 library(sp)
 library(rgdal)
@@ -73,14 +73,14 @@ library(tmap)
 
 ii) Read the London Borough boundary shapefile and census csv file from a local directory.
 
-```{r, echo=TRUE}
+```{r, echo=TRUE,results='hide'}
 BoroughBd <- readOGR("Part1/shapefiles/england_lad_2011.shp")
 LondonData <- read.csv("Part1/LondonData.csv")
 ```
 
 iii) Manipulate the data to get a sp feature neccessary for plotting.
 
-```{r, echo=TRUE}
+```{r, echo=TRUE,results='hide'}
 LondonData <- data.frame(LondonData)
 LondonBoroughs <- LondonData[grep("^E09",LondonData[,3]),] # select rows of London Boroughs
 LondonBoroughs <- LondonBoroughs[,c(3,16)] # select needed columns
@@ -100,7 +100,7 @@ tmap_mode("view")
 tm_shape(Borough_repro) +
   tm_polygons("Percentage",
               style="jenks",
-              palette=get_brewer_pal("Blues", n = 5,contrast = c(0,1)),
+              palette=get_brewer_pal("Blues", n = 5,contrast = c(0,1),plot = FALSE),
               border.col = "white",
               midpoint=NA,
               popup.vars="Percentage",
