@@ -1,0 +1,16 @@
+CDU_FIELD_NAME,CENSUS_CELLNAME,TOPIC,CATEGORY,TOPIC_DESCRIPTION,
+F168,KS102EW0002,Age,Age 0 to 4,"Age is derived from the date of birth question and is a person's age at their last birthday, at 27 March 2011. Dates of birth that imply an age over 115 are treated as invalid and the person's age is imputed. Infants less than one year old are classified as 0 years of age.",
+F168,KS102EW0002,Unit,Persons,The unit is for a particular count (e.g. people or households),
+F181,KS102EW0015,Age,Age 75 to 84,"Age is derived from the date of birth question and is a person's age at their last birthday, at 27 March 2011. Dates of birth that imply an age over 115 are treated as invalid and the person's age is imputed. Infants less than one year old are classified as 0 years of age.",
+F181,KS102EW0015,Unit,Persons,The unit is for a particular count (e.g. people or households),
+F182,KS102EW0016,Age,Age 85 to 89,"Age is derived from the date of birth question and is a person's age at their last birthday, at 27 March 2011. Dates of birth that imply an age over 115 are treated as invalid and the person's age is imputed. Infants less than one year old are classified as 0 years of age.",
+F182,KS102EW0016,Unit,Persons,The unit is for a particular count (e.g. people or households),
+F183,KS102EW0017,Age,Age 90 and over,"Age is derived from the date of birth question and is a person's age at their last birthday, at 27 March 2011. Dates of birth that imply an age over 115 are treated as invalid and the person's age is imputed. Infants less than one year old are classified as 0 years of age.",
+F183,KS102EW0017,Unit,Persons,The unit is for a particular count (e.g. people or households),
+F1915,QS303EW0001,Long-term health problem or disability,Total\ Long-term health problem or disability,"A long-term health problem or disability that limits a person's day-to-day activities, and has lasted, or is expected to last, at least 12 months. This includes problems that are related to old age. People were asked to assess whether their daily activities were limited a lot or a little by such a health problem, or whether their daily activities were not limited at all.",
+F1915,QS303EW0001,Unit,Persons,The unit is for a particular count (e.g. people or households),
+F1921,QS803EW0003,"Residence in the UK, length of [E][S][W]",Resident in UK\ Less than 2 years,The length of residence in the UK is derived from the date that a person last arrived to live in the UK. Short visits away from the UK are not counted in determining the date that a person last arrived.
+<br/>
+
+Length of residence is only applicable to usual residents who were not born in the UK. It does not include usual residents born in the UK who have emigrated and since returned - these are recorded in the category 'Born in the UK'.,
+F1921,QS803EW0003,Unit,Persons,The unit is for a particular count (e.g. people or households),
