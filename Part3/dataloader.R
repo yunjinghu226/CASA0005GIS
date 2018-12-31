@@ -9,9 +9,10 @@ library(maptools)
 library(rgdal)
 
 # load data
-census1 <- read.csv("Part3/Data Download/lsoa-data.csv",stringsAsFactors = FALSE)
-census2 <- read.csv("Part3/Data Download/census supplement/Data_supplement.csv",stringsAsFactors = FALSE)
-lsoaboundary <- readOGR("Part3/Data Download/statistical-gis-boundaries-london/statistical-gis-boundaries-london/ESRI/LSOA_2011_London_gen_MHW.shp")
+wd <- getwd()
+census1 <- read.csv(paste(wd,"/Data Download/lsoa-data.csv",sep = ""),stringsAsFactors = FALSE)
+census2 <- read.csv(paste(wd,"/Data Download/census supplement/Data_supplement.csv",sep = ""),stringsAsFactors = FALSE)
+lsoaboundary <- readOGR(paste(wd,"/Data Download/statistical-gis-boundaries-london/statistical-gis-boundaries-london/ESRI/LSOA_2011_London_gen_MHW.shp",sep = ""))
 
 # reorganize data: combine needed variables from census data into one dataframe
 # first extract needed data from two original census table and make sure the numbers are numeric
@@ -19,8 +20,7 @@ census1_needed <- census1[1:4835,c("Lower.Super.Output.Area","X2011.Census.Popul
 colnames(census1_needed)[1] <- "GEO_CODE"
 census2_needed <- census2[2:4836,c("GEO_CODE","F168","F181","F182","F183","F1915","F1921")]
 census2_needed[,2:7] <- as.data.frame(sapply(census2_needed[,2:7], as.numeric))
-attach(census1_needed)
-attach(census2_needed)
+
 # then combine all vairables into one table and convert several variables from count to percentage
 census2_needed$AgeOver75 <- with(census2_needed,F181+F182+F183)
 census_comb <- merge(census1_needed,census2_needed,by = "GEO_CODE")
@@ -33,7 +33,7 @@ census_var <- census_comb[,c(1,3,4,5,6,7,8,9,10,11,19,20,21)]
 # calculate z-score
 census_z <- standardize(census_var)
 # drop unnecessary columns in attribute table of the boundary
-lsoaboundary@data <- lsoaboundary@data[,1:2]
+lsoaboundary@data <- lsoaboundary@data[,1:10]
 
 # write the new dataframe and save as csv
 # write.csv(census_z,file = "Part3/Working Data/variable_zscore.csv")
