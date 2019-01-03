@@ -12,7 +12,7 @@ library(rgdal)
 wd <- getwd()
 census1 <- read.csv(paste(wd,"/Data Download/lsoa-data.csv",sep = ""),stringsAsFactors = FALSE)
 census2 <- read.csv(paste(wd,"/Data Download/census supplement/Data_supplement.csv",sep = ""),stringsAsFactors = FALSE)
-lsoaboundary <- readOGR(paste(wd,"/Data Download/statistical-gis-boundaries-london/statistical-gis-boundaries-london/ESRI/LSOA_2011_London_gen_MHW.shp",sep = ""))
+lsoaboundary <- readOGR(paste(wd,"/Data Download/statistical-gis-boundaries-london/statistical-gis-boundaries-london/ESRI",sep = ""),"LSOA_2011_London_gen_MHW")
 
 # reorganize data: combine needed variables from census data into one dataframe
 # first extract needed data from two original census table and make sure the numbers are numeric
@@ -32,8 +32,11 @@ census_var <- census_comb[,c(1,3,4,5,6,7,8,9,10,11,19,20,21)]
 
 # calculate z-score
 census_z <- standardize(census_var)
-# drop unnecessary columns in attribute table of the boundary
-lsoaboundary@data <- lsoaboundary@data[,1:10]
+census_z$svi <- with(census_z,census_z[,2]+census_z[,3]+census_z[,4]+census_z[,5]+census_z[,6]+census_z[,7]+census_z[,8]+census_z[,9]+census_z[,10]+census_z[,11]+census_z[,12]+census_z[,13])
+# drop unnecessary columns in attribute table of the boundary and reproject the data
+lsoaboundary@data <- lsoaboundary@data[,1:2]
+lsoaboundary@data <- data.frame(lsoaboundary@data,census_z[match(lsoaboundary@data[,"LSOA11CD"],census_z[,"GEO_CODE"]),])
+lsoaboundary_rep <- spTransform(lsoaboundary, CRS("+init=epsg:4326"))
 
 # write the new dataframe and save as csv
 # write.csv(census_z,file = "Part3/Working Data/variable_zscore.csv")

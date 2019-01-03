@@ -12,7 +12,7 @@ library(tmaptools)
 
 shinyUI(fluidPage(
   # plot the svi map
-  leafletOutput("map1", width = "100%", height = "100%"),
+  leafletOutput("map1"),
   
   # create a float panel with sliders
   sidebarPanel( width = 300,
@@ -54,7 +54,8 @@ shinyUI(fluidPage(
                             value = 1),
                 sliderInput("x12", "New to UK:",
                             min = 0, max = 1,
-                            value = 1)
+                            value = 1),
+                actionButton("getmap","Get SVI Map")
                 )
   
 ))
