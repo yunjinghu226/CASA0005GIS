@@ -13,6 +13,7 @@ wd <- getwd()
 census1 <- read.csv(paste(wd,"/Data Download/lsoa-data.csv",sep = ""),stringsAsFactors = FALSE)
 census2 <- read.csv(paste(wd,"/Data Download/census supplement/Data_supplement.csv",sep = ""),stringsAsFactors = FALSE)
 lsoaboundary <- readOGR(paste(wd,"/Data Download/statistical-gis-boundaries-london/statistical-gis-boundaries-london/ESRI",sep = ""),"LSOA_2011_London_gen_MHW")
+borough <- readOGR(paste(wd,"/Data Download/Londonborough",sep = ""),"england_lad_2011")
 
 # reorganize data: combine needed variables from census data into one dataframe
 # first extract needed data from two original census table and make sure the numbers are numeric
@@ -37,6 +38,7 @@ census_z$svi <- with(census_z,census_z[,2]+census_z[,3]+census_z[,4]+census_z[,5
 lsoaboundary@data <- lsoaboundary@data[,1:2]
 lsoaboundary@data <- data.frame(lsoaboundary@data,census_z[match(lsoaboundary@data[,"LSOA11CD"],census_z[,"GEO_CODE"]),])
 lsoaboundary_rep <- spTransform(lsoaboundary, CRS("+init=epsg:4326"))
+borough_rep <- spTransform(borough,CRS("+init=epsg:4326"))
 
 # write the new dataframe and save as csv
-# write.csv(census_z,file = "Part3/Working Data/variable_zscore.csv")
+# write.csv(census_z,file = paste(wd,"/variable_zscore_svi.csv",sep = ""))

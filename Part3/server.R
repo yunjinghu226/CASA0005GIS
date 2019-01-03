@@ -12,20 +12,49 @@ shinyServer(function(input, output, session){
       palette = "YlOrBr",
       domain = lsoaboundary_rep@data$svi,
       bins = breaks)
-    
+    labels_lsoa <- sprintf(
+      "%s",
+      lsoaboundary_rep@data$LSOA11NM
+    ) %>% lapply(htmltools::HTML)
+    labels_br <- sprintf(
+      "%s",
+      borough_rep@data$name
+    ) %>% lapply(htmltools::HTML)
+  
     leaflet(lsoaboundary_rep) %>% 
       addPolygons(
         fillColor = ~pal(lsoaboundary_rep@data$svi),
         fillOpacity = 1,
         smoothFactor = 0,
-        stroke = F
+        stroke = F,
+        label = labels_lsoa
       ) %>%
-      addProviderTiles("Esri.WorldGrayCanvas") %>% 
+      addPolygons(
+        data = borough_rep,
+        group = "London Borough",
+        fillOpacity = 0,
+        color = "white",
+        opacity = 1,
+        weight = 3,
+        smoothFactor = 0.5,
+        label = labels_br,
+        highlight = highlightOptions(
+          weight = 5,
+          color = "#666",
+          opacity = 1,
+          fillOpacity = 0,
+          bringToFront = TRUE)
+      ) %>%
+      addProviderTiles("CartoDB.DarkMatterNoLabels") %>% 
       addLegend(pal = pal,
                 values = ~lsoaboundary_rep@data$svi,
                 title = "Social Vulnerability Index",
                 position = "bottomleft",
                 opacity = 1) %>%
+      addLayersControl(
+        overlayGroups = c("London Borough"),
+        options = layersControlOptions(collapsed = FALSE)
+      ) %>%
       setView(-0.0881798, 51.48932, zoom = 9)
   })
   # modify the lsoa attribute table
@@ -34,23 +63,25 @@ shinyServer(function(input, output, session){
   })
   # observer to redraw the map
   observe({
-
     breaks <- classIntervals(lsoaboundary_new()@data$svi, n=5, style="quantile")$brks
     pal <- colorBin(
       palette = "YlOrBr",
       domain = lsoaboundary_new()@data$svi,
       bins = breaks
     )
+    labels <- sprintf(
+      "%s",
+      lsoaboundary_rep@data$LSOA11NM
+    ) %>% lapply(htmltools::HTML)
     leafletProxy("map1", data = lsoaboundary_new()) %>%
       clearShapes() %>%
       addPolygons(
         fillColor = ~pal(lsoaboundary_new()@data$svi),
         fillOpacity = 1,
         smoothFactor = 0,
-        stroke = F
-      )
-
-
+        stroke = F,
+        label = labels
+      ) 
   })
   observe({
     breaks <- classIntervals(lsoaboundary_new()@data$svi, n=5, style="quantile")$brks
