@@ -3,8 +3,9 @@ title: "GIS Assessment"
 author: "Yunjing Hu"
 date: "January 4, 2019"
 output:
-  html_document: default
+  word_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -95,7 +96,7 @@ Borough_repro <-spTransform(BoroughBd, CRS("+proj=longlat +datum=WGS84")) #repro
 
 iv) Plot the reprojected sp feature with tmap package and set to desired style.
 
-```{r, echo=TRUE}
+```{r, echo=TRUE,eval=FALSE}
 tmap_mode("view")
 tm_shape(Borough_repro) +
   tm_polygons("Percentage",
@@ -106,6 +107,11 @@ tm_shape(Borough_repro) +
               popup.vars="Percentage",
               title="% of people not born in London")
 ```
+
+Below is a screenshot of the interactive map produced.
+
+![*interactive map*](Part1/pngs/interactivemap.png)
+
 
 Compared to QGIS, R is more handy for data maniputaling especially for attribute data. It is easy to clean and slice neccessary data with built-in functions in R. Besides, it is much easier to manage the project with R when it has to be revised frequently or involves group work becaused the connection with Git makes it possible to perform version control and process the work at multiple workspaces. 
 
@@ -205,4 +211,441 @@ The plot shows that the calculated K value is above the expected value almost al
 
 ### 3. Part Three
 
+#### 3.1 Introduction
 
+This part of the assessment is focusing on developing a Shiny web tool that produces a Social Vulnerability Index (SVI) map of London based on weighting values of indicators from user input. The social vulnerability discussed in this project refers to people’s inability to prepare for, resist with, and recover from certain natural hazard. While individuals possess different resources and abilities based on their physical and social status, different groups of people can be impacted differently by a natural hazard. That is to say, some groups of people may be more disadvantaged when any hazard happens due to lack of information, money, mobility, or immunity, and they are those who may need more assistance in the event of emergency. Thus, to better allocate the resource to support those who are really in need, it is essential to understand where the groups with more vulnerability are. Based on this concept, the Social Vulnerability Index, a score calculated from the statistic of related indicators, was introduced to measure the vulnerability of the people in an area. Then, by mapping the index, it will be revealed that which areas have people who can be impacted more by natural hazards thus need more attention. To produce the SVI map of London that can help with decision making in risk management, this project aims to develop a web tool with the flexibility of choosing indicators and deciding the relevancy of each indicator and the ability to calculate and map the SVI. 
+
+#### 3.2 Literature Review
+
+The recent studies on social vulnerability has been focusing on the three aspects: the spatial pattern of social vulnerability and it relationship with other socioeconomic characteristics, the development of SVI and related tools, and assessment of SVI. Bergstrand et al (2015) verified the correlation between high social vulnerability and low community resilience of American neighborhoods by measuring and mapping these two concepts, and provided more comprehensive portraits of communities in terms of their ability to overcome natural hazards and priority of receiving assistance. In the study on the spatial pattern of social vulnerability to heat of Greater Atlanta in US, Sim (2017) found that areas with high social vulnerability tend to cluster in southern Atlanta. 
+
+In terms of SVI and tool development, Flanagan et al (2011) constructed the SVI at tract level in the US by summing up the percentile rank of 15 census variables and produced an interactive SVI map. Sayers et al (2017) developed a Neighborhood Flood Vulnerability Index (NFVI) system for UK, in which 27 census variables were used and categorized into 12 indicators and then into four influential characteristics (see figure below). The NFVI at different level was calculated by summing up the z-score of each variables with equal weighting. Built upon this research, a map tool displaying the result of NFVI and flood risk projection was developed by researchers from University of Manchester. Besides, similar case studies on SVI construction and mapping have been conducted in Norway (Holand et al, 2010), China (Yi et al, 2014), and Chiayi, Taiwan (Lee, 2014).
+
+![*NFVI and its influential characteristics and indicators*](Part3/pngs/litrevsvi.png)
+
+
+For assessment of SVI system, Schmidtlein et al (2008) conducted a rather comprehensive research, examining the sensitivity of SVI built with different set of variables, different algorithms, applied to different geographic contexts, and at different scales. The results indicate that the information conveyed through SVI could be affected by the scale of study (i.e. level of aggregation of the areas) and algorithm matters when the geographic context differs. That is to say, different places require different way to constructing the index to better represent the vulnerability. The study by Yoon (2012) compares the results of SVI constructed with inductive and deductive methods and found that different outcomes were produced with these two approaches. 
+
+#### 3.3 Motivation
+
+Concluded from the literature review, it has been a common sense that understanding the social vulnerability pattern is crucial for more reasonable decision making in risk and disaster management and can better prepare people with support when exposed to any emergency or extreme situations. While various research has been conducted on this subject, the ways to display data and represent the result are limited to plain choropleth maps, and very few web maps and tools are available for people to access the information and process the data more efficiently. Other than this, the existing literatures also suggest that the methods employed to construct the SVI should be decided accordingly in different situations. Besides, variables involved could be vary with different kinds of natural hazards. Therefore, there is a research gap of developing a tool with which people can map the SVI with some customization on indicators and test with different possibilities more easily. 
+
+#### 3.4 Tool Design
+
+While there are lots of possibilities with this web tool, in this project it will be focused on developing a prototype based on London with some basic functions. The main feature of this tool is to calculate the SVI of London LSOAs by adding weighted z-scores of 12 related census variables with weights decided by users and display the SVI map. Although the variables related to social vulnerability could be massive and there are algorithms other than weighted sum of z-scores, only 12 variables and one algorithm were involved in this case due to the data availability and in order to control the complexity of the project. The chosen of variables and algorithm is based on the research by Sayers et al (2017) due to the similarity of geographic context. Both the LSOA boundary shapefile and the census csv file were retrieved from UK Data Service. 
+
+As illustrated by the graph below, the tool will have three main funcitons at this stage: 
+
+a. A control panel for users to choose variables needed and adjust their weights in the calculation. With this module, users will be able to set weights for variables through slidebars representing values from 0 to 1, so that setting the slidebar basically means remove that variable from the metric. Users can then update the SVI map by clicking a button on the control panel.
+
+b. Display the interactive SVI map of London based on user input with basemap and other necessary layers such as administrative boundaries.
+
+c. Perform a basic spatial autocorrelation analysis with Moran’s I test and Getis Ord General G test on SVI then display the results. The result of Moran’s I test will show with the click on an action button. The result of Getis Ord General G test will be displayed in the form of a hot/cold spot map showing where high and low SVI values cluster.
+
+![*Tool Design*](Part3/pngs/ToolDesign.png)
+
+
+To realize these, the tool was built by coding in R with mainly Shiny package and Leaflet package. The structure of the program and other involved packages, approaches, and functions are showed as below.  The complete code is attached as appendix 2.
+
+#### 3.5 Results, Limitations, and Future Research
+
+The following two screenshot shows what the web tool looks like. 
+
+![*SVI Map*](Part3/pngs/finalproduct1.png)
+
+
+![*Spatial Autocorrelation Analysis*](Part3/pngs/finalproduct2.png)
+
+
+As stated before, this is only a prototype tool with lots of limitations but also potentials of improvement. First, more information and data could be included. There could be more variables and algorithm alternatives involved to provide more options for SVI systems built with different metrics.  Other factors related to risk management, such as physical and built environment characteristics, could also be added as map layers. Besides, option for calculating and mapping SVI at different levels of aggregation could be provided, which means there could be a SVI map of wards in London.  Second, more modules with functions allow users to better explore the data are desired. For example, there could be a module to perform geodemographic classification with the SVI values and other attributes so that the users could have another perspective to portrait the regions. Some other functions such as downloading the data and saving the map could also enrich the tool. Third, the layout of the webpage could be adjusted with more labels, guides, or explanations for better user experience.
+
+### References
+
+Bergstrand, K., Mayer, B., Brumback, B., Zhang, Y., 2015. Assessing the Relationship Between Social Vulnerability and Community Resilience to Hazards. Social Indicators Research; Dordrecht 122, 391–409. http://dx.doi.org.libproxy.ucl.ac.uk/10.1007/s11205-014-0698-3
+Flanagan, B.E., Gregory, E.W., Hallisey, E.J., Heitgerd, J.L., Lewis, B., 2011. A Social Vulnerability Index for Disaster Management. Journal of Homeland Security and Emergency Management 8. https://doi.org/10.2202/1547-7355.1792
+Holand, I.S., Lujala, P., Rød, J.K., 2011. Social vulnerability assessment for Norway: A quantitative approach. Norsk Geografisk Tidsskrift - Norwegian Journal of Geography 65, 1–17. https://doi.org/10.1080/00291951.2010.550167
+Lee, Y.-J., 2014. Social vulnerability indicators as a sustainable planning tool. Environmental Impact Assessment Review 44, 31–42. https://doi.org/10.1016/j.eiar.2013.08.002
+Office for National Statistics ; National Records of Scotland ; Northern Ireland Statistics and Research Agency (2017): 2011 Census aggregate data. UK Data Service (Edition: February 2017). DOI: http://dx.doi.org/10.5257/census/aggregate-2011-2
+Sayers, P., Penning-Rowsell, E.C., Horritt, M., 2018. Flood vulnerability, risk, and social disadvantage: current and future patterns in the UK. Reg Environ Change 18, 339–352. https://doi.org/10.1007/s10113-017-1252-z
+Schmidtlein, M.C., Deutsch, R.C., Piegorsch, W.W., Cutter, S.L., 2008. A Sensitivity Analysis of the Social Vulnerability Index. Risk Analysis: An International Journal 28, 1099–1114.
+Sim, S., 2017. Social vulnerability to heat in Greater Atlanta, USA: spatial pattern of heat, NDVI, socioeconomics and household composition, in: Remote Sensing Technologies and Applications in Urban Environments II. Presented at the SPIE Remote Sensing, Warsaw, Poland. https://doi.org/10.1117/12.2278678
+Yi, L., Zhang, X., Ge, L., Zhao, D., 2014. Analysis of social vulnerability to hazards in China. Environmental Earth Sciences; Heidelberg 71, 3109–3117. http://dx.doi.org.libproxy.ucl.ac.uk/10.1007/s12665-013-2689-0
+Yoon, D.K., 2012. Assessment of social vulnerability to natural disasters: a comparative study. Natural Hazards; Dordrecht 63, 823–843. http://dx.doi.org.libproxy.ucl.ac.uk/10.1007/s11069-012-0189-2
+
+### Appendix
+
+##### Appendix 1
+
+credit to Pili Mayora
+
+```{python,echo=TRUE,eval=FALSE}
+
+import googlemaps
+import csv
+import time
+
+gmaps = googlemaps.Client(key='AIzaSyASW8btzoW1bgSF0ONXmxHhM-_hNR3oh48')
+
+with open('huntlocations.csv', mode='r') as locationsFile:
+    with open('geocodedHuntLocations.csv', mode='w') as geocodedLocationsFile:
+        locationsReader = csv.reader(locationsFile)
+        locationsWriter = csv.writer(geocodedLocationsFile)
+        locationsWriter.writerow(['location', 'lat', 'lng', 'points'])
+
+        # skip headers
+        next(locationsReader)
+
+        for location in locationsReader:
+            locationAddress = location[0]
+            points = location[1]
+
+            geocodedResult = gmaps.geocode(locationAddress)
+            geocodedResult = geocodedResult[0]
+
+            if (geocodedResult):
+                locationsWriter.writerow([
+                    locationAddress,
+                    geocodedResult.get('geometry').get('location').get('lat'),
+                    geocodedResult.get('geometry').get('location').get('lng'),
+                    points
+                ])
+
+            time.sleep(2)
+
+
+```
+
+##### Appendix 2
+
+```{r,echo=TRUE,eval=FALSE}
+# dataloader
+# 1. cleans the original census data and produces a dataframe of z-scores for each variable involved, then calculate the svi by adding all zscores, calculate a localG
+# 2. read in the shapefile of lsoa boundaries and clean it
+
+# load library
+library(tidyverse)
+library(psycho)
+library(maptools)
+library(rgdal)
+
+# load data
+wd <- getwd()
+census1 <- read.csv(paste(wd,"/Data Download/lsoa-data.csv",sep = ""),stringsAsFactors = FALSE)
+census2 <- read.csv(paste(wd,"/Data Download/census supplement/Data_supplement.csv",sep = ""),stringsAsFactors = FALSE)
+lsoaboundary <- readOGR(paste(wd,"/Data Download/statistical-gis-boundaries-london/statistical-gis-boundaries-london/ESRI",sep = ""),"LSOA_2011_London_gen_MHW")
+borough <- readOGR(paste(wd,"/Data Download/Londonborough",sep = ""),"england_lad_2011")
+
+# reorganize data: combine needed variables from census data into one dataframe
+# first extract needed data from two original census table and make sure the numbers are numeric
+census1_needed <- census1[1:4835,c("Lower.Super.Output.Area","X2011.Census.Population.Age.Structure.All.Ages","Country.of.Birth...Not.United.Kingdom.2011","Household.Language...of.households.where.no.people.aged.16.or.over.have.English.as.a.main.language.2011","Tenure.Social.rented.....2011","Tenure.Private.rented.....2011","Adults.in.Employment...of.households.with.no.adults.in.employment..With.dependent.children.2011","Economic.Activity.Unemployment.Rate.2011","Health.Day.to.day.activities.limited.a.lot.....2011","Health.Bad.or.Very.Bad.health.....2011","Car.or.van.availability.No.cars.or.vans.in.household.....2011")]
+colnames(census1_needed)[1] <- "GEO_CODE"
+census2_needed <- census2[2:4836,c("GEO_CODE","F168","F181","F182","F183","F1915","F1921")]
+census2_needed[,2:7] <- as.data.frame(sapply(census2_needed[,2:7], as.numeric))
+
+# then combine all vairables into one table and convert several variables from count to percentage
+census2_needed$AgeOver75 <- with(census2_needed,F181+F182+F183)
+census_comb <- merge(census1_needed,census2_needed,by = "GEO_CODE")
+census_comb$PercentUnder5 <- with(census_comb,F168/X2011.Census.Population.Age.Structure.All.Ages*100)
+census_comb$PercentOver75 <- with(census_comb,AgeOver75/X2011.Census.Population.Age.Structure.All.Ages*100)
+census_comb$PercentNewtoUK <- with(census_comb,F1921/X2011.Census.Population.Age.Structure.All.Ages*100)
+# last extract the geo_code column and other necessary variables
+census_var <- census_comb[,c(1,3,4,5,6,7,8,9,10,11,19,20,21)]
+
+# calculate z-score
+census_z <- standardize(census_var)
+census_z$svi <- with(census_z,census_z[,2]+census_z[,3]+census_z[,4]+census_z[,5]+census_z[,6]+census_z[,7]+census_z[,8]+census_z[,9]+census_z[,10]+census_z[,11]+census_z[,12]+census_z[,13])
+# drop unnecessary columns in attribute table of the boundary and reproject the data
+lsoaboundary@data <- lsoaboundary@data[,1:2]
+lsoaboundary@data <- data.frame(lsoaboundary@data,census_z[match(lsoaboundary@data[,"LSOA11CD"],census_z[,"GEO_CODE"]),])
+lsoaboundary_rep <- spTransform(lsoaboundary, CRS("+init=epsg:4326"))
+borough_rep <- spTransform(borough,CRS("+init=epsg:4326"))
+
+# perform moran's I test and add a column to the lsoa dataframe
+# create spatial weights
+coordsW <- coordinates(lsoaboundary_rep)
+lsoa_nb <- poly2nb(lsoaboundary_rep, queen=T)
+lsoa.lw <- nb2listw(lsoa_nb, style="C")
+# calculate Getis Ord General G
+lsoaboundary_rep@data$G_svi <- localG(lsoaboundary_rep@data$svi, lsoa.lw)
+
+```
+
+```{r,echo=TRUE,eval=FALSE}
+# a function modifying the attribute table of lsoaboundary
+# arguments: weighting values (12)
+# output: an updated spatial polygon dataframe
+
+modifier <- function(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12){
+  # re-calculate svi
+  lsoaboundary_rep@data$svi <- census_z[,2]*x1+census_z[,3]*x2+census_z[,4]*x3+census_z[,5]*x4+census_z[,6]*x5+census_z[,7]*x6+census_z[,8]*x7+census_z[,9]*x8+census_z[,10]*x9+census_z[,11]*x10+census_z[,12]*x11+census_z[,13]*x12
+  # re-calculate Getis Ord General G
+  lsoaboundary_rep@data$G_svi <- localG(lsoaboundary_rep@data$svi, lsoa.lw)
+  return(lsoaboundary_rep)
+}
+```
+
+```{r,echo=TRUE,eval=FALSE}
+# user interface
+
+library(leaflet)
+library(sp)
+library(maptools)
+library(rgdal)
+library(shiny)
+library(classInt)
+library(RColorBrewer)
+library(spdep)
+
+shinyUI(fluidPage(
+  # display maps and analysis results on the left
+  column(width = 9,
+         helpText("SVI Map"),
+         leafletOutput("map1", height = 500),
+         br(),
+         verbatimTextOutput("i_result"),
+         helpText("Hot/Cold Spot of SVI"),
+         leafletOutput("map3",height = 500)
+  ),
+  # control panel on the right
+  column(width = 3,
+             h3("Set Weighting Values for Indicators"),
+             #add sliders for each variable
+             sliderInput("x1", "Not Born in UK:",
+                         min = 0, max = 1,
+                         value = 1),
+             sliderInput("x2", "English not Main Language:",
+                         min = 0, max = 1,
+                         value = 1),
+             sliderInput("x3", "Social Rented Tenure:",
+                         min = 0, max = 1,
+                         value = 1),
+             sliderInput("x4", "Private Rented Tenure:",
+                         min = 0, max = 1,
+                         value = 1),
+             sliderInput("x5", "Unemployed Adults with Dependent Children:",
+                         min = 0, max = 1,
+                         value = 1),
+             sliderInput("x6", "Unemployment Rate:",
+                         min = 0, max = 1,
+                         value = 1),
+             sliderInput("x7", "Limited Activities:",
+                         min = 0, max = 1,
+                         value = 1),
+             sliderInput("x8", "Bad Health:",
+                         min = 0, max = 1,
+                         value = 1),
+             sliderInput("x9", "No Car/Van:",
+                         min = 0, max = 1,
+                         value = 1),
+             sliderInput("x10", "Young Population:",
+                         min = 0, max = 1,
+                         value = 1),
+             sliderInput("x11", "Elderly Population:",
+                         min = 0, max = 1,
+                         value = 1),
+             sliderInput("x12", "New to UK:",
+                         min = 0, max = 1,
+                         value = 1),
+             actionButton("getmap","Get SVI Map"),
+             actionButton("moransi","Moran's I Test")
+  )
+  
+))
+```
+
+```{r,echo=TRUE,eval=FALSE}
+# shiny server
+
+source("dataloader.r")
+source("modifier.r")
+
+shinyServer(function(input, output, session){
+  # plot the svi map with borough boundaries
+  output$map1 <- renderLeaflet({
+    breaks <- classIntervals(lsoaboundary_rep@data$svi, n=5, style="quantile")$brks
+    pal <- colorBin(
+      palette = "YlOrBr",
+      domain = lsoaboundary_rep@data$svi,
+      bins = breaks)
+    labels_lsoa <- sprintf(
+      "%s",
+      lsoaboundary_rep@data$LSOA11NM
+    ) %>% lapply(htmltools::HTML)
+    labels_br <- sprintf(
+      "%s",
+      borough_rep@data$name
+    ) %>% lapply(htmltools::HTML)
+  
+    leaflet(lsoaboundary_rep) %>% 
+      addPolygons(
+        fillColor = ~pal(lsoaboundary_rep@data$svi),
+        fillOpacity = 1,
+        smoothFactor = 0,
+        stroke = F,
+        label = labels_lsoa
+      ) %>%
+      addPolygons(
+        data = borough_rep,
+        group = "London Borough",
+        fillOpacity = 0,
+        color = "white",
+        opacity = 1,
+        weight = 3,
+        smoothFactor = 0.5,
+        label = labels_br,
+        highlight = highlightOptions(
+          weight = 5,
+          color = "#666",
+          opacity = 1,
+          fillOpacity = 0,
+          bringToFront = TRUE)
+      ) %>%
+      addProviderTiles("CartoDB.DarkMatterNoLabels") %>% 
+      addLegend(pal = pal,
+                values = ~lsoaboundary_rep@data$svi,
+                title = "Social Vulnerability Index",
+                position = "bottomleft",
+                opacity = 1) %>%
+      addLayersControl(
+        overlayGroups = c("London Borough"),
+        options = layersControlOptions(collapsed = FALSE)
+      ) 
+  })
+
+  # plot the Gi* map
+  output$map3 <- renderLeaflet({
+    breaks1 <- c(-1000,-2.58,-1.96,-1.65,1.65,1.96,2.58,1000)
+    pal_g <- colorBin(
+      palette = "RdBu",
+      domain = lsoaboundary_rep@data$G_svi,
+      bins = breaks1,
+      reverse = TRUE)
+    leaflet(lsoaboundary_rep) %>%
+      addPolygons(
+        fillColor = ~pal_g(lsoaboundary_rep@data$G_svi),
+        fillOpacity = 1,
+        smoothFactor = 0,
+        stroke = F
+      ) %>%
+      addLegend(
+        pal = pal_g,
+        values = ~lsoaboundary_rep@data$I_svi,
+        title = "GI*,SVI",
+        position = "bottomleft",
+        opacity = 1
+      ) %>%
+      addProviderTiles("Esri.WorldGrayCanvas")
+  })
+
+  # modify the lsoa attribute table
+  lsoaboundary_new <- eventReactive(input$getmap,{
+    modifier(x1=input$x1,x2=input$x2,x3=input$x3,x4=input$x4,x5=input$x5,x6=input$x6,x7=input$x7,x8=input$x8,x9=input$x9,x10=input$x10,x11=input$x11,x12=input$x12)
+  })
+  # display the moran's i test result
+  iresult <- eventReactive(input$moransi,{
+    moran.test(lsoaboundary_new()@data$svi, lsoa.lw)
+  })
+  output$i_result <- renderPrint({
+    iresult()
+  })
+  
+  # observer to redraw the maps
+  observe({
+    breaks <- classIntervals(lsoaboundary_new()@data$svi, n=5, style="quantile")$brks
+    pal <- colorBin(
+      palette = "YlOrBr",
+      domain = lsoaboundary_new()@data$svi,
+      bins = breaks
+    )
+    labels <- sprintf(
+      "%s",
+      lsoaboundary_rep@data$LSOA11NM
+    ) %>% lapply(htmltools::HTML)
+    labels_br <- sprintf(
+      "%s",
+      borough_rep@data$name
+    ) %>% lapply(htmltools::HTML)
+    
+    leafletProxy("map1", data = lsoaboundary_new()) %>%
+      clearShapes() %>%
+      addPolygons(
+        fillColor = ~pal(lsoaboundary_new()@data$svi),
+        fillOpacity = 1,
+        smoothFactor = 0,
+        stroke = F,
+        label = labels
+      ) %>%
+    addPolygons(
+      data = borough_rep,
+      group = "London Borough",
+      fillOpacity = 0,
+      color = "white",
+      opacity = 1,
+      weight = 3,
+      smoothFactor = 0.5,
+      label = labels_br,
+      highlight = highlightOptions(
+        weight = 5,
+        color = "#666",
+        opacity = 1,
+        fillOpacity = 0,
+        bringToFront = TRUE)) %>%
+      addLayersControl(
+        overlayGroups = c("London Borough"),
+        options = layersControlOptions(collapsed = FALSE)
+      )
+    
+  })
+  observe({
+    breaks <- classIntervals(lsoaboundary_new()@data$svi, n=5, style="quantile")$brks
+    pal <- colorBin(
+      palette = "YlOrBr",
+      domain = lsoaboundary_new()@data$svi,
+      bins = breaks
+    )
+    proxy <- leafletProxy("map1", data = lsoaboundary_new())
+    proxy %>% clearControls() %>%
+      addLegend(pal = pal,
+                values = ~lsoaboundary_new()@data$svi,
+                title = "Social Vulnerability Index",
+                position = "bottomleft",
+                opacity = 1)
+  })
+ 
+  observe({
+    breaks1 <- c(-1000,-2.58,-1.96,-1.65,1.65,1.96,2.58,1000)
+    pal_g <- colorBin(
+      palette = "RdBu",
+      domain = lsoaboundary_new()@data$G_svi,
+      bins = breaks1,
+      reverse = TRUE)
+    leafletProxy("map3", data = lsoaboundary_new()) %>%
+      clearShapes() %>%
+      addPolygons(
+        fillColor = ~pal_g(lsoaboundary_new()@data$G_svi),
+        fillOpacity = 1,
+        smoothFactor = 0,
+        stroke = F
+      ) %>%
+      addProviderTiles("Esri.WorldGrayCanvas")
+  })
+  observe({
+    breaks1 <- c(-1000,-2.58,-1.96,-1.65,1.65,1.96,2.58,1000)
+    pal_g <- colorBin(
+      palette = "RdBu",
+      domain = lsoaboundary_new()@data$G_svi,
+      bins = breaks1,
+      reverse = TRUE)
+    proxy <- leafletProxy("map3", data = lsoaboundary_new())
+    proxy %>% clearControls() %>%
+    addLegend(
+      pal = pal_g,
+      values = ~lsoaboundary_new()@data$I_svi,
+      title = "GI*,SVI",
+      position = "bottomleft",
+      opacity = 1
+    )
+  })
+
+})
+```
