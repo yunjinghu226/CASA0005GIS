@@ -1,0 +1,1317 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={GIS Assessment},
+            pdfauthor={Yunjing Hu},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{GIS Assessment}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Yunjing Hu}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{January 4, 2019}
+
+
+\begin{document}
+\maketitle
+
+\subsubsection{1. Part One}\label{part-one}
+
+In this part, two maps were produced with QGIS and RStudio seperately.
+They are displayed here with brief descriptions about the procedures of
+making the maps, as well as a critical comparison of the tools used to
+produce them.
+
+\paragraph{1.1 Map created with QGIS}\label{map-created-with-qgis}
+
+This a map showing the the percentage of people not born in London of
+each Borough with deeper blue indicating higher percentage.
+
+\begin{figure}
+\centering
+\includegraphics{Part1/QGIS_Map.jpg}
+\caption{\emph{Thematic map made with QGIS}}
+\end{figure}
+
+The data was fetched from UK Data Services, with seperate london
+boundary shapefile and csv file of census data on population structure.
+To start making the map, add these two layers to QGIS through ``Vector''
+tab and ``Delimited Text'' tab seperately in ``Data Source Manager''
+accessed from the ``Layer'' menu.
+
+\begin{figure}
+\centering
+\includegraphics{Part1/pngs/add_layer.png}
+\caption{\emph{add layers}}
+\end{figure}
+
+Before joining two layers, check the attribute table of shapefile and
+the csv file to make sure there is a common field that can be set as the
+``join field''. Then the csv data was joined to the boundary shapefile
+by going to the ``join'' tab in the ``properties'' window of the
+boundary layer.
+
+\begin{figure}
+\centering
+\includegraphics{Part1/pngs/join_layer.png}
+\caption{\emph{join layers}}
+\end{figure}
+
+Next, display the data as desired through adjusting features under
+``Symbology'' and ``Label'' tabs in the ``properties'' window of the
+boundary layer.
+
+\begin{figure}
+\centering
+\includegraphics{Part1/pngs/display_data.png}
+\caption{\emph{adjust symbologies}}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{Part1/pngs/label.png}
+\caption{\emph{adjust labels}}
+\end{figure}
+
+Base map was added through ``XYZ Tiles''. To load the base map options,
+run the
+\href{https://raw.githubusercontent.com/klakar/QGIS_resources/master/collections/Geosupportsystem/python/qgis_basemaps.py}{python
+script} get from the tutorial
+\href{https://opengislab.com/blog/2018/4/15/add-basemaps-in-qgis-30}{online}
+in the ``Python Console'' accessed from ``Plugins'' menu.
+
+\begin{figure}
+\centering
+\includegraphics{Part1/pngs/basemap.png}
+\caption{\emph{add basemap}}
+\end{figure}
+
+Lastly, the layout was generated using ``Layout Manager''.
+
+\begin{figure}
+\centering
+\includegraphics{Part1/pngs/layout.png}
+\caption{\emph{generate layout}}
+\end{figure}
+
+As shown in the ``Data Source Manager'', QGIS is capable of compiling
+various types of data and adding them via different pathes. This makes
+it convenient to work together with all kinds of open sourse databases.
+Besides, various plugins including python console are supported, which
+gives it possibility to be conneted with resources and functions of
+other platforms.
+
+While using QGIS to display the data, the result of visualization can be
+reflected immediately and adjusted accordingly to best convey the
+information. The color, style of lines, and style of text are directly
+demonstrated before being chosen to be applied to the map. Besides, it
+is intuitive to generate layout in a GUI-based tool because there is
+nested functions of adding different cartographical elements and they
+can be easily adjusted and moved around for the desired consequence.
+
+\paragraph{1.2 Map created with RStudio}\label{map-created-with-rstudio}
+
+Below are codes demonstrating the steps of building up an interactive
+map of the same theme and similar rendering style using the same data
+files and made with the tmap package in RStudio.
+
+\begin{enumerate}
+\def\labelenumi{\roman{enumi})}
+\tightlist
+\item
+  Load packages
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching packages --------------------------------------- tidyverse 1.2.1 --
+\end{verbatim}
+
+\begin{verbatim}
+## v ggplot2 3.0.0     v purrr   0.2.5
+## v tibble  1.4.2     v dplyr   0.7.6
+## v tidyr   0.8.1     v stringr 1.3.1
+## v readr   1.1.1     v forcats 0.3.0
+\end{verbatim}
+
+\begin{verbatim}
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(sp)}
+\KeywordTok{library}\NormalTok{(rgdal)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## rgdal: version: 1.3-6, (SVN revision 773)
+##  Geospatial Data Abstraction Library extensions to R successfully loaded
+##  Loaded GDAL runtime: GDAL 2.2.3, released 2017/11/20
+##  Path to GDAL shared files: C:/Users/alexy/Documents/R/win-library/3.5/rgdal/gdal
+##  GDAL binary built with GEOS: TRUE 
+##  Loaded PROJ.4 runtime: Rel. 4.9.3, 15 August 2016, [PJ_VERSION: 493]
+##  Path to PROJ.4 shared files: C:/Users/alexy/Documents/R/win-library/3.5/rgdal/proj
+##  Linking to sp version: 1.3-1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(shinyjs)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'shinyjs'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:sp':
+## 
+##     show
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:methods':
+## 
+##     removeClass, show
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(htmltools)}
+\KeywordTok{library}\NormalTok{(RColorBrewer)}
+\KeywordTok{library}\NormalTok{(tmaptools)}
+\KeywordTok{library}\NormalTok{(tmap)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\roman{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Read the London Borough boundary shapefile and census csv file from a
+  local directory.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{BoroughBd <-}\StringTok{ }\KeywordTok{readOGR}\NormalTok{(}\StringTok{"Part1/shapefiles/england_lad_2011.shp"}\NormalTok{)}
+\NormalTok{LondonData <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"Part1/LondonData.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\roman{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Manipulate the data to get a sp feature neccessary for plotting.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LondonData <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(LondonData)}
+\NormalTok{LondonBoroughs <-}\StringTok{ }\NormalTok{LondonData[}\KeywordTok{grep}\NormalTok{(}\StringTok{"^E09"}\NormalTok{,LondonData[,}\DecValTok{3}\NormalTok{]),] }\CommentTok{# select rows of London Boroughs}
+\NormalTok{LondonBoroughs <-}\StringTok{ }\NormalTok{LondonBoroughs[,}\KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{16}\NormalTok{)] }\CommentTok{# select needed columns}
+\NormalTok{LondonBoroughs <-}\StringTok{ }\NormalTok{LondonBoroughs[}\DecValTok{2}\OperatorTok{:}\DecValTok{34}\NormalTok{,] }\CommentTok{# get rid of duplicated column}
+\NormalTok{BoroughBd}\OperatorTok{@}\NormalTok{data <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(BoroughBd}\OperatorTok{@}\NormalTok{data,LondonBoroughs[}\KeywordTok{match}\NormalTok{(BoroughBd}\OperatorTok{@}\NormalTok{data[,}\StringTok{"code"}\NormalTok{],LondonBoroughs[,}\StringTok{"code"}\NormalTok{]),]) }\CommentTok{# join the attribute data to the SP data}
+\KeywordTok{names}\NormalTok{(BoroughBd)[}\DecValTok{3}\NormalTok{] <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Borough Name"}\NormalTok{) }\CommentTok{# rename the column}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in checkNames(value): attempt to set invalid names: this may lead
+## to problems later on. See ?make.names
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{names}\NormalTok{(BoroughBd)[}\DecValTok{6}\NormalTok{] <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Percentage"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in checkNames(value): attempt to set invalid names: this may lead
+## to problems later on. See ?make.names
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{BoroughBd <-}\StringTok{ }\NormalTok{BoroughBd[}\KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{6}\NormalTok{)] }\CommentTok{# extract the two neccessary columns}
+\NormalTok{Borough_repro <-}\KeywordTok{spTransform}\NormalTok{(BoroughBd, }\KeywordTok{CRS}\NormalTok{(}\StringTok{"+proj=longlat +datum=WGS84"}\NormalTok{)) }\CommentTok{#reproject the data}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\roman{enumi})}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Plot the reprojected sp feature with tmap package and set to desired
+  style.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{tmap_mode}\NormalTok{(}\StringTok{"view"}\NormalTok{)}
+\KeywordTok{tm_shape}\NormalTok{(Borough_repro) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{tm_polygons}\NormalTok{(}\StringTok{"Percentage"}\NormalTok{,}
+              \DataTypeTok{style=}\StringTok{"jenks"}\NormalTok{,}
+              \DataTypeTok{palette=}\KeywordTok{get_brewer_pal}\NormalTok{(}\StringTok{"Blues"}\NormalTok{, }\DataTypeTok{n =} \DecValTok{5}\NormalTok{,}\DataTypeTok{contrast =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{),}\DataTypeTok{plot =} \OtherTok{FALSE}\NormalTok{),}
+              \DataTypeTok{border.col =} \StringTok{"white"}\NormalTok{,}
+              \DataTypeTok{midpoint=}\OtherTok{NA}\NormalTok{,}
+              \DataTypeTok{popup.vars=}\StringTok{"Percentage"}\NormalTok{,}
+              \DataTypeTok{title=}\StringTok{"% of people not born in London"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Below is a screenshot of the interactive map produced.
+
+\begin{figure}
+\centering
+\includegraphics{Part1/pngs/interactivemap.png}
+\caption{\emph{interactive map}}
+\end{figure}
+
+Compared to QGIS, R is more handy for data maniputaling especially for
+attribute data. It is easy to clean and slice neccessary data with
+built-in functions in R. Besides, it is much easier to manage the
+project with R when it has to be revised frequently or involves group
+work becaused the connection with Git makes it possible to perform
+version control and process the work at multiple workspaces.
+
+As for visualization, in terms of making simple thematic map, although R
+is capable of making interactive maps with certain packages, it seems
+not to be inferior to a GUI-based tool since those rendering features
+are all subject to customization through coding. It takes much more
+efforts to get to know and become familier with the tools and functions
+available in R since they are not directly shown anywhere. Besides, to
+realized the desired visualization effect, which involves in lots of
+detail tweaking, cartographers will need to refer to the documentations
+and type the code all the time. It also takes extra time to debugging
+and figuring out results that each line of code will lead to.
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{2. Part Two}\label{part-two}
+
+This part aims to solve six given questions about certain spatial
+features and relationships by choosing suitable analytical tools and
+methods. The process of the solution design and analysis will also be
+discussed.
+
+\paragraph{2.1 Problem Overview and Solution
+Design}\label{problem-overview-and-solution-design}
+
+To answer the questions, approaches including geometry calculation,
+buffer generation, location query, attribute manipulation, statistic
+summarization, and spatial clustering will be needed. These approaches
+can all be conducted with built-in geo-processing tools in ArcGIS, which
+can be easily found throughout the interface of the software and are
+intuitive to use. Thus, ArcGIS will be the main tool utilized to solve
+the problems. To perform these analysis with tools in ArcGIS, the
+existing data and information in the form of KML and CSV will need to be
+converted to Feature Class and the attribute table joined to features,
+which can be also done by conversion tools in the software.
+
+\begin{figure}
+\centering
+\includegraphics{Part2/pngs/solutionflow.png}
+\caption{\emph{General Workflow}}
+\end{figure}
+
+\paragraph{2.2 Process and Methods}\label{process-and-methods}
+
+The detailed processes and tools used to solve each question is
+explained with the workflow diagram below.
+
+\begin{figure}
+\centering
+\includegraphics{Part2/pngs/processflow.png}
+\caption{\emph{Detailed workflow}}
+\end{figure}
+
+The first five questions essentially are all asking for a statistic
+summary of certain numerical attribute of a group of spatial features.
+Therefore, the answers were easily approached through the attribute
+tables of the feature class or shapefiles converted from the original
+data. However, when accomplishing this process in ArcGIS, some steps,
+such as conversion and reprojection, had to be repeated multiple times
+for different layers, which were kind of time-consuming and annoying. In
+this case, code-based environment might actually be more efficient to
+process the data. As for the last question, which is about analysis of
+point spatial pattern, pertinent analytical model is required to give an
+answer. Between the two available commonly used models for analyzing
+point spatial pattern, the Quadrat Analysis and Ripley's K test,
+Ripley's K is more reliable without the influence of scale and shape of
+observation window, so Ripley'K test was performed. While both ArcGIS
+and R has the tool or function to run the test, R was used in this case
+because certain error kept occurring with ArcGIS and failed to be
+solved.
+
+\paragraph{2.3 Results and Discussion}\label{results-and-discussion}
+
+\subparagraph{2.3.1 Question 1: How far did you
+travel?}\label{question-1-how-far-did-you-travel}
+
+\begin{figure}
+\centering
+\includegraphics{Part2/pngs/Q1.png}
+\caption{\emph{Answer to Q1}}
+\end{figure}
+
+As shown above, the total length of lines is calculated to be
+64148.978657 metres. That is to say, \textbf{the distance travelled is
+about 64 km.} However, the accuracy of this result is impacted by the
+accuracy of the raw timeline KML data from GoogleMap, because instead of
+recording the exact route of movement, the timeline function can only
+form a gerneral route by drawing straight lines between the spots that
+has been visited. Besides, the process of reprojecting the data to BNG
+could also have caused some error for calculating the length of lines.
+
+\subparagraph{2.3.2 Question 2: How many TfL station did your route pass
+within 100 metres
+distance?}\label{question-2-how-many-tfl-station-did-your-route-pass-within-100-metres-distance}
+
+\begin{figure}
+\centering
+\includegraphics{Part2/pngs/Q2.png}
+\caption{\emph{Answer to Q2}}
+\end{figure}
+
+By selecting stations within the buffer layer, 38 stations are selected.
+Thus, \textbf{the route passes 38 stations within 100 metres.}
+
+\subparagraph{2.3.3 Question 3: How many points did you score based on
+treasure hunt locations they managed to get within 300 metres
+of?}\label{question-3-how-many-points-did-you-score-based-on-treasure-hunt-locations-they-managed-to-get-within-300-metres-of}
+
+\begin{figure}
+\centering
+\includegraphics{Part2/pngs/Q5.png}
+\caption{\emph{Answer to Q3}}
+\end{figure}
+
+By summing up the numbers in the ``points'' field of selected entries,
+\textbf{the total points scored is 26.} When approaching this answer,
+the GoogleMap API and a chunk of python code (see appendix 1) is used to
+geocode the treasure hunt locations. This process of geocoding could
+have led to some error when mapping the locations.
+
+\subparagraph{2.3.4 Question 4: Which Wards did you pass through that
+had the (a) lowest and (b) the highest rates of Male Life
+Expectancy?}\label{question-4-which-wards-did-you-pass-through-that-had-the-a-lowest-and-b-the-highest-rates-of-male-life-expectancy}
+
+\begin{figure}
+\centering
+\includegraphics{Part2/pngs/Q3-1.png}
+\caption{\emph{Answer to Q4(a)}}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{Part2/pngs/Q3-2.png}
+\caption{\emph{Answer to Q4(b)}}
+\end{figure}
+
+In the attribute table of the layer of wards passed through, by sorting
+the field of male life expectancy, it can be seen that the first entry
+is \textbf{Westbourne}, which has the lowest rate, and the last is
+\textbf{Knightsbridge and Belgravia}, which has the highest rate.
+
+\subparagraph{2.3.5 Question 5: What was the average life expectancy at
+birth for babies born in those wards along the whole
+route?}\label{question-5-what-was-the-average-life-expectancy-at-birth-for-babies-born-in-those-wards-along-the-whole-route}
+
+\begin{figure}
+\centering
+\includegraphics{Part2/pngs/Q4.png}
+\caption{\emph{Answer to Q5}}
+\end{figure}
+
+Again, by looking at the statistics of the attribute table of the
+related layer, \textbf{the average life expectancy for male is 79.63 and
+for female is 84.52.}
+
+\subparagraph{2.3.6 Question 6: Is there any spatial patterns for CASA
+Treasure Hunt locations or are they randomly
+distributed?}\label{question-6-is-there-any-spatial-patterns-for-casa-treasure-hunt-locations-or-are-they-randomly-distributed}
+
+The Ripley's K test was perfomed using the kest function in the spatstat
+package in R. The code used is shown as below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#load the necessary libraries}
+\KeywordTok{library}\NormalTok{(spatstat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: spatstat.data
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: nlme
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'nlme'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:dplyr':
+## 
+##     collapse
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: rpart
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## spatstat 1.57-1       (nickname: 'Cartoon Physics') 
+## For an introduction to spatstat, type 'beginner'
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(sp)}
+\KeywordTok{library}\NormalTok{(rgeos)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## rgeos version: 0.4-1, (SVN revision 579)
+##  GEOS runtime version: 3.6.1-CAPI-1.10.1 
+##  Linking to sp version: 1.3-1 
+##  Polygon checking: TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(maptools)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Checking rgeos availability: TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(GISTools)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: MASS
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'MASS'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:spatstat':
+## 
+##     area
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:dplyr':
+## 
+##     select
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tmap)}
+\KeywordTok{library}\NormalTok{(sf)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linking to GEOS 3.6.1, GDAL 2.2.3, PROJ 4.9.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(geojsonio)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'geojsonio'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:base':
+## 
+##     pretty
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tmaptools)}
+\KeywordTok{library}\NormalTok{(rgdal)}
+
+\CommentTok{#read the data of London wards and treasure hunt locations}
+\NormalTok{TreasHuntPoint <-}\StringTok{ }\KeywordTok{readOGR}\NormalTok{(}\StringTok{"Part2/shapefiles/TreasHuntPoints.shp"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## OGR data source with driver: ESRI Shapefile 
+## Source: "C:\Users\alexy\Desktop\CASA0005GISAssessment\Part2\shapefiles\TreasHuntPoints.shp", layer: "TreasHuntPoints"
+## with 50 features
+## It has 6 fields
+## Integer64 fields read as strings:  OBJECTID points
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LondonWards <-}\StringTok{ }\KeywordTok{readOGR}\NormalTok{(}\StringTok{"Part2/shapefiles/LondonData_Joined.shp"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## OGR data source with driver: ESRI Shapefile 
+## Source: "C:\Users\alexy\Desktop\CASA0005GISAssessment\Part2\shapefiles\LondonData_Joined.shp", layer: "LondonData_Joined"
+## with 625 features
+## It has 74 fields
+## Integer64 fields read as strings:  OBJECTID Population Children_a Working_ag Older_peop Median_Age Number_Kil In_employm Number_of_ Median_Hou Number_of1 Median_H_1 Number_o_1 percent_Fl ID2010_Ran ID2010_per
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#run a point pattern analysis with ripley's K}
+\NormalTok{window <-}\StringTok{ }\KeywordTok{as.owin}\NormalTok{(LondonWards)}
+\NormalTok{TreasHunt.ppp <-}\StringTok{ }\KeywordTok{ppp}\NormalTok{(}\DataTypeTok{x=}\NormalTok{TreasHuntPoint}\OperatorTok{@}\NormalTok{coords[,}\DecValTok{1}\NormalTok{],}\DataTypeTok{y=}\NormalTok{TreasHuntPoint}\OperatorTok{@}\NormalTok{coords[,}\DecValTok{2}\NormalTok{],}\DataTypeTok{window=}\NormalTok{window)}
+\NormalTok{K <-}\StringTok{ }\KeywordTok{Kest}\NormalTok{(TreasHunt.ppp, }\DataTypeTok{correction=}\StringTok{"border"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(K)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{GISAssessment_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+The plot shows that the calculated K value is above the expected value
+almost all the time, indicating that \textbf{the treasure hunt points
+are clustred in London}.
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{3. Part Three}\label{part-three}
+
+\paragraph{3.1 Introduction}\label{introduction}
+
+This part of the assessment is focusing on developing a Shiny web tool
+that produces a Social Vulnerability Index (SVI) map of London based on
+weighting values of indicators from user input. The social vulnerability
+discussed in this project refers to people's inability to prepare for,
+resist with, and recover from certain natural hazard. While individuals
+possess different resources and abilities based on their physical and
+social status, different groups of people can be impacted differently by
+a natural hazard. That is to say, some groups of people may be more
+disadvantaged when any hazard happens due to lack of information, money,
+mobility, or immunity, and they are those who may need more assistance
+in the event of emergency. Thus, to better allocate the resource to
+support those who are really in need, it is essential to understand
+where the groups with more vulnerability are. Based on this concept, the
+Social Vulnerability Index, a score calculated from the statistic of
+related indicators, was introduced to measure the vulnerability of the
+people in an area. Then, by mapping the index, it will be revealed that
+which areas have people who can be impacted more by natural hazards thus
+need more attention. To produce the SVI map of London that can help with
+decision making in risk management, this project aims to develop a web
+tool with the flexibility of choosing indicators and deciding the
+relevancy of each indicator and the ability to calculate and map the
+SVI.
+
+\paragraph{3.2 Literature Review}\label{literature-review}
+
+The recent studies on social vulnerability has been focusing on the
+three aspects: the spatial pattern of social vulnerability and it
+relationship with other socioeconomic characteristics, the development
+of SVI and related tools, and assessment of SVI. Bergstrand et al (2015)
+verified the correlation between high social vulnerability and low
+community resilience of American neighborhoods by measuring and mapping
+these two concepts, and provided more comprehensive portraits of
+communities in terms of their ability to overcome natural hazards and
+priority of receiving assistance. In the study on the spatial pattern of
+social vulnerability to heat of Greater Atlanta in US, Sim (2017) found
+that areas with high social vulnerability tend to cluster in southern
+Atlanta.
+
+In terms of SVI and tool development, Flanagan et al (2011) constructed
+the SVI at tract level in the US by summing up the percentile rank of 15
+census variables and produced an interactive SVI map. Sayers et al
+(2017) developed a Neighborhood Flood Vulnerability Index (NFVI) system
+for UK, in which 27 census variables were used and categorized into 12
+indicators and then into four influential characteristics (see figure
+below). The NFVI at different level was calculated by summing up the
+z-score of each variables with equal weighting. Built upon this
+research, a map tool displaying the result of NFVI and flood risk
+projection was developed by researchers from University of Manchester.
+Besides, similar case studies on SVI construction and mapping have been
+conducted in Norway (Holand et al, 2010), China (Yi et al, 2014), and
+Chiayi, Taiwan (Lee, 2014).
+
+\begin{figure}
+\centering
+\includegraphics{Part3/pngs/litrevsvi.png}
+\caption{\emph{NFVI and its influential characteristics and indicators}}
+\end{figure}
+
+For assessment of SVI system, Schmidtlein et al (2008) conducted a
+rather comprehensive research, examining the sensitivity of SVI built
+with different set of variables, different algorithms, applied to
+different geographic contexts, and at different scales. The results
+indicate that the information conveyed through SVI could be affected by
+the scale of study (i.e.~level of aggregation of the areas) and
+algorithm matters when the geographic context differs. That is to say,
+different places require different way to constructing the index to
+better represent the vulnerability. The study by Yoon (2012) compares
+the results of SVI constructed with inductive and deductive methods and
+found that different outcomes were produced with these two approaches.
+
+\paragraph{3.3 Motivation}\label{motivation}
+
+Concluded from the literature review, it has been a common sense that
+understanding the social vulnerability pattern is crucial for more
+reasonable decision making in risk and disaster management and can
+better prepare people with support when exposed to any emergency or
+extreme situations. While various research has been conducted on this
+subject, the ways to display data and represent the result are limited
+to plain choropleth maps, and very few web maps and tools are available
+for people to access the information and process the data more
+efficiently. Other than this, the existing literatures also suggest that
+the methods employed to construct the SVI should be decided accordingly
+in different situations. Besides, variables involved could be vary with
+different kinds of natural hazards. Therefore, there is a research gap
+of developing a tool with which people can map the SVI with some
+customization on indicators and test with different possibilities more
+easily.
+
+\paragraph{3.4 Tool Design}\label{tool-design}
+
+While there are lots of possibilities with this web tool, in this
+project it will be focused on developing a prototype based on London
+with some basic functions. The main feature of this tool is to calculate
+the SVI of London LSOAs by adding weighted z-scores of 12 related census
+variables with weights decided by users and display the SVI map.
+Although the variables related to social vulnerability could be massive
+and there are algorithms other than weighted sum of z-scores, only 12
+variables and one algorithm were involved in this case due to the data
+availability and in order to control the complexity of the project. The
+chosen of variables and algorithm is based on the research by Sayers et
+al (2017) due to the similarity of geographic context. Both the LSOA
+boundary shapefile and the census csv file were retrieved from UK Data
+Service.
+
+As illustrated by the graph below, the tool will have three main
+funcitons at this stage: +A control panel for users to choose variables
+needed and adjust their weights in the calculation. With this module,
+users will be able to set weights for variables through slidebars
+representing values from 0 to 1, so that setting the slidebar basically
+means remove that variable from the metric. Users can then update the
+SVI map by clicking a button on the control panel. +Display the
+interactive SVI map of London based on user input with basemap and other
+necessary layers such as administrative boundaries. +Perform a basic
+spatial autocorrelation analysis with Moran's I test and Getis Ord
+General G test on SVI then display the results. The result of Moran's I
+test will show with the click on an action button. The result of Getis
+Ord General G test will be displayed in the form of a hot/cold spot map
+showing where high and low SVI values cluster.
+
+\begin{figure}
+\centering
+\includegraphics{Part3/pngs/ToolDesign.png}
+\caption{\emph{Tool Design}}
+\end{figure}
+
+To realize these, the tool was built by coding in R with mainly Shiny
+package and Leaflet package. The structure of the program and other
+involved packages, approaches, and functions are showed as below. The
+complete code is attached as appendix 2.
+
+\paragraph{3.5 Results, Limitations, and Future
+Research}\label{results-limitations-and-future-research}
+
+The following two screenshot shows what the web tool looks like.
+
+\begin{figure}
+\centering
+\includegraphics{Part3/pngs/finalproduct1.png}
+\caption{\emph{SVI Map}}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{Part3/pngs/finalproduct2.png}
+\caption{\emph{Spatial Autocorrelation Analysis}}
+\end{figure}
+
+As stated before, this is only a prototype tool with lots of limitations
+but also potentials of improvement. First, more information and data
+could be included. There could be more variables and algorithm
+alternatives involved to provide more options for SVI systems built with
+different metrics. Other factors related to risk management, such as
+physical and built environment characteristics, could also be added as
+map layers. Besides, option for calculating and mapping SVI at different
+levels of aggregation could be provided, which means there could be a
+SVI map of wards in London. Second, more modules with functions allow
+users to better explore the data are desired. For example, there could
+be a module to perform geodemographic classification with the SVI values
+and other attributes so that the users could have another perspective to
+portrait the regions. Some other functions such as downloading the data
+and saving the map could also enrich the tool. Third, the layout of the
+webpage could be adjusted with more labels, guides, or explanations for
+better user experience.
+
+\subsubsection{References}\label{references}
+
+Bergstrand, K., Mayer, B., Brumback, B., Zhang, Y., 2015. Assessing the
+Relationship Between Social Vulnerability and Community Resilience to
+Hazards. Social Indicators Research; Dordrecht 122, 391--409.
+\url{http://dx.doi.org.libproxy.ucl.ac.uk/10.1007/s11205-014-0698-3}
+Flanagan, B.E., Gregory, E.W., Hallisey, E.J., Heitgerd, J.L., Lewis,
+B., 2011. A Social Vulnerability Index for Disaster Management. Journal
+of Homeland Security and Emergency Management 8.
+\url{https://doi.org/10.2202/1547-7355.1792} Holand, I.S., Lujala, P.,
+Rød, J.K., 2011. Social vulnerability assessment for Norway: A
+quantitative approach. Norsk Geografisk Tidsskrift - Norwegian Journal
+of Geography 65, 1--17.
+\url{https://doi.org/10.1080/00291951.2010.550167} Lee, Y.-J., 2014.
+Social vulnerability indicators as a sustainable planning tool.
+Environmental Impact Assessment Review 44, 31--42.
+\url{https://doi.org/10.1016/j.eiar.2013.08.002} Office for National
+Statistics ; National Records of Scotland ; Northern Ireland Statistics
+and Research Agency (2017): 2011 Census aggregate data. UK Data Service
+(Edition: February 2017). DOI:
+\url{http://dx.doi.org/10.5257/census/aggregate-2011-2} Sayers, P.,
+Penning-Rowsell, E.C., Horritt, M., 2018. Flood vulnerability, risk, and
+social disadvantage: current and future patterns in the UK. Reg Environ
+Change 18, 339--352. \url{https://doi.org/10.1007/s10113-017-1252-z}
+Schmidtlein, M.C., Deutsch, R.C., Piegorsch, W.W., Cutter, S.L., 2008. A
+Sensitivity Analysis of the Social Vulnerability Index. Risk Analysis:
+An International Journal 28, 1099--1114. Sim, S., 2017. Social
+vulnerability to heat in Greater Atlanta, USA: spatial pattern of heat,
+NDVI, socioeconomics and household composition, in: Remote Sensing
+Technologies and Applications in Urban Environments II. Presented at the
+SPIE Remote Sensing, Warsaw, Poland.
+\url{https://doi.org/10.1117/12.2278678} Yi, L., Zhang, X., Ge, L.,
+Zhao, D., 2014. Analysis of social vulnerability to hazards in China.
+Environmental Earth Sciences; Heidelberg 71, 3109--3117.
+\url{http://dx.doi.org.libproxy.ucl.ac.uk/10.1007/s12665-013-2689-0}
+Yoon, D.K., 2012. Assessment of social vulnerability to natural
+disasters: a comparative study. Natural Hazards; Dordrecht 63, 823--843.
+\url{http://dx.doi.org.libproxy.ucl.ac.uk/10.1007/s11069-012-0189-2}
+
+\subsubsection{Appendix}\label{appendix}
+
+\subparagraph{Appendix 1}\label{appendix-1}
+
+credit to Pili Mayora
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ googlemaps}
+\ImportTok{import}\NormalTok{ csv}
+\ImportTok{import}\NormalTok{ time}
+\NormalTok{gmaps }\OperatorTok{=}\NormalTok{ googlemaps.Client(key}\OperatorTok{=}\StringTok{'AIzaSyASW8btzoW1bgSF0ONXmxHhM-_hNR3oh48'}\NormalTok{)}
+\ControlFlowTok{with} \BuiltInTok{open}\NormalTok{(}\StringTok{'huntlocations.csv'}\NormalTok{, mode}\OperatorTok{=}\StringTok{'r'}\NormalTok{) }\ImportTok{as}\NormalTok{ locationsFile:}
+    \ControlFlowTok{with} \BuiltInTok{open}\NormalTok{(}\StringTok{'geocodedHuntLocations.csv'}\NormalTok{, mode}\OperatorTok{=}\StringTok{'w'}\NormalTok{) }\ImportTok{as}\NormalTok{ geocodedLocationsFile:}
+\NormalTok{        locationsReader }\OperatorTok{=}\NormalTok{ csv.reader(locationsFile)}
+\NormalTok{        locationsWriter }\OperatorTok{=}\NormalTok{ csv.writer(geocodedLocationsFile)}
+\NormalTok{        locationsWriter.writerow([}\StringTok{'location'}\NormalTok{, }\StringTok{'lat'}\NormalTok{, }\StringTok{'lng'}\NormalTok{, }\StringTok{'points'}\NormalTok{])}
+        \CommentTok{# skip headers}
+        \BuiltInTok{next}\NormalTok{(locationsReader)}
+        \ControlFlowTok{for}\NormalTok{ location }\KeywordTok{in}\NormalTok{ locationsReader:}
+\NormalTok{            locationAddress }\OperatorTok{=}\NormalTok{ location[}\DecValTok{0}\NormalTok{]}
+\NormalTok{            points }\OperatorTok{=}\NormalTok{ location[}\DecValTok{1}\NormalTok{]}
+\NormalTok{            geocodedResult }\OperatorTok{=}\NormalTok{ gmaps.geocode(locationAddress)}
+\NormalTok{            geocodedResult }\OperatorTok{=}\NormalTok{ geocodedResult[}\DecValTok{0}\NormalTok{]}
+            \ControlFlowTok{if}\NormalTok{ (geocodedResult):}
+\NormalTok{                locationsWriter.writerow([}
+\NormalTok{                    locationAddress,}
+\NormalTok{                    geocodedResult.get(}\StringTok{'geometry'}\NormalTok{).get(}\StringTok{'location'}\NormalTok{).get(}\StringTok{'lat'}\NormalTok{),}
+\NormalTok{                    geocodedResult.get(}\StringTok{'geometry'}\NormalTok{).get(}\StringTok{'location'}\NormalTok{).get(}\StringTok{'lng'}\NormalTok{),}
+\NormalTok{                    points}
+\NormalTok{                ])}
+\NormalTok{            time.sleep(}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subparagraph{Appendix 2}\label{appendix-2}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# dataloader}
+\CommentTok{# 1. cleans the original census data and produces a dataframe of z-scores for each variable involved, then calculate the svi by adding all zscores, calculate a localG}
+\CommentTok{# 2. read in the shapefile of lsoa boundaries and clean it}
+
+\CommentTok{# load library}
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\KeywordTok{library}\NormalTok{(psycho)}
+\KeywordTok{library}\NormalTok{(maptools)}
+\KeywordTok{library}\NormalTok{(rgdal)}
+
+\CommentTok{# load data}
+\NormalTok{wd <-}\StringTok{ }\KeywordTok{getwd}\NormalTok{()}
+\NormalTok{census1 <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\KeywordTok{paste}\NormalTok{(wd,}\StringTok{"/Data Download/lsoa-data.csv"}\NormalTok{,}\DataTypeTok{sep =} \StringTok{""}\NormalTok{),}\DataTypeTok{stringsAsFactors =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{census2 <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\KeywordTok{paste}\NormalTok{(wd,}\StringTok{"/Data Download/census supplement/Data_supplement.csv"}\NormalTok{,}\DataTypeTok{sep =} \StringTok{""}\NormalTok{),}\DataTypeTok{stringsAsFactors =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{lsoaboundary <-}\StringTok{ }\KeywordTok{readOGR}\NormalTok{(}\KeywordTok{paste}\NormalTok{(wd,}\StringTok{"/Data Download/statistical-gis-boundaries-london/statistical-gis-boundaries-london/ESRI"}\NormalTok{,}\DataTypeTok{sep =} \StringTok{""}\NormalTok{),}\StringTok{"LSOA_2011_London_gen_MHW"}\NormalTok{)}
+\NormalTok{borough <-}\StringTok{ }\KeywordTok{readOGR}\NormalTok{(}\KeywordTok{paste}\NormalTok{(wd,}\StringTok{"/Data Download/Londonborough"}\NormalTok{,}\DataTypeTok{sep =} \StringTok{""}\NormalTok{),}\StringTok{"england_lad_2011"}\NormalTok{)}
+
+\CommentTok{# reorganize data: combine needed variables from census data into one dataframe}
+\CommentTok{# first extract needed data from two original census table and make sure the numbers are numeric}
+\NormalTok{census1_needed <-}\StringTok{ }\NormalTok{census1[}\DecValTok{1}\OperatorTok{:}\DecValTok{4835}\NormalTok{,}\KeywordTok{c}\NormalTok{(}\StringTok{"Lower.Super.Output.Area"}\NormalTok{,}\StringTok{"X2011.Census.Population.Age.Structure.All.Ages"}\NormalTok{,}\StringTok{"Country.of.Birth...Not.United.Kingdom.2011"}\NormalTok{,}\StringTok{"Household.Language...of.households.where.no.people.aged.16.or.over.have.English.as.a.main.language.2011"}\NormalTok{,}\StringTok{"Tenure.Social.rented.....2011"}\NormalTok{,}\StringTok{"Tenure.Private.rented.....2011"}\NormalTok{,}\StringTok{"Adults.in.Employment...of.households.with.no.adults.in.employment..With.dependent.children.2011"}\NormalTok{,}\StringTok{"Economic.Activity.Unemployment.Rate.2011"}\NormalTok{,}\StringTok{"Health.Day.to.day.activities.limited.a.lot.....2011"}\NormalTok{,}\StringTok{"Health.Bad.or.Very.Bad.health.....2011"}\NormalTok{,}\StringTok{"Car.or.van.availability.No.cars.or.vans.in.household.....2011"}\NormalTok{)]}
+\KeywordTok{colnames}\NormalTok{(census1_needed)[}\DecValTok{1}\NormalTok{] <-}\StringTok{ "GEO_CODE"}
+\NormalTok{census2_needed <-}\StringTok{ }\NormalTok{census2[}\DecValTok{2}\OperatorTok{:}\DecValTok{4836}\NormalTok{,}\KeywordTok{c}\NormalTok{(}\StringTok{"GEO_CODE"}\NormalTok{,}\StringTok{"F168"}\NormalTok{,}\StringTok{"F181"}\NormalTok{,}\StringTok{"F182"}\NormalTok{,}\StringTok{"F183"}\NormalTok{,}\StringTok{"F1915"}\NormalTok{,}\StringTok{"F1921"}\NormalTok{)]}
+\NormalTok{census2_needed[,}\DecValTok{2}\OperatorTok{:}\DecValTok{7}\NormalTok{] <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(census2_needed[,}\DecValTok{2}\OperatorTok{:}\DecValTok{7}\NormalTok{], as.numeric))}
+
+\CommentTok{# then combine all vairables into one table and convert several variables from count to percentage}
+\NormalTok{census2_needed}\OperatorTok{$}\NormalTok{AgeOver75 <-}\StringTok{ }\KeywordTok{with}\NormalTok{(census2_needed,F181}\OperatorTok{+}\NormalTok{F182}\OperatorTok{+}\NormalTok{F183)}
+\NormalTok{census_comb <-}\StringTok{ }\KeywordTok{merge}\NormalTok{(census1_needed,census2_needed,}\DataTypeTok{by =} \StringTok{"GEO_CODE"}\NormalTok{)}
+\NormalTok{census_comb}\OperatorTok{$}\NormalTok{PercentUnder5 <-}\StringTok{ }\KeywordTok{with}\NormalTok{(census_comb,F168}\OperatorTok{/}\NormalTok{X2011.Census.Population.Age.Structure.All.Ages}\OperatorTok{*}\DecValTok{100}\NormalTok{)}
+\NormalTok{census_comb}\OperatorTok{$}\NormalTok{PercentOver75 <-}\StringTok{ }\KeywordTok{with}\NormalTok{(census_comb,AgeOver75}\OperatorTok{/}\NormalTok{X2011.Census.Population.Age.Structure.All.Ages}\OperatorTok{*}\DecValTok{100}\NormalTok{)}
+\NormalTok{census_comb}\OperatorTok{$}\NormalTok{PercentNewtoUK <-}\StringTok{ }\KeywordTok{with}\NormalTok{(census_comb,F1921}\OperatorTok{/}\NormalTok{X2011.Census.Population.Age.Structure.All.Ages}\OperatorTok{*}\DecValTok{100}\NormalTok{)}
+\CommentTok{# last extract the geo_code column and other necessary variables}
+\NormalTok{census_var <-}\StringTok{ }\NormalTok{census_comb[,}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{9}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{11}\NormalTok{,}\DecValTok{19}\NormalTok{,}\DecValTok{20}\NormalTok{,}\DecValTok{21}\NormalTok{)]}
+
+\CommentTok{# calculate z-score}
+\NormalTok{census_z <-}\StringTok{ }\KeywordTok{standardize}\NormalTok{(census_var)}
+\NormalTok{census_z}\OperatorTok{$}\NormalTok{svi <-}\StringTok{ }\KeywordTok{with}\NormalTok{(census_z,census_z[,}\DecValTok{2}\NormalTok{]}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{3}\NormalTok{]}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{4}\NormalTok{]}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{5}\NormalTok{]}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{6}\NormalTok{]}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{7}\NormalTok{]}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{8}\NormalTok{]}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{9}\NormalTok{]}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{10}\NormalTok{]}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{11}\NormalTok{]}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{12}\NormalTok{]}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{13}\NormalTok{])}
+\CommentTok{# drop unnecessary columns in attribute table of the boundary and reproject the data}
+\NormalTok{lsoaboundary}\OperatorTok{@}\NormalTok{data <-}\StringTok{ }\NormalTok{lsoaboundary}\OperatorTok{@}\NormalTok{data[,}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{]}
+\NormalTok{lsoaboundary}\OperatorTok{@}\NormalTok{data <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(lsoaboundary}\OperatorTok{@}\NormalTok{data,census_z[}\KeywordTok{match}\NormalTok{(lsoaboundary}\OperatorTok{@}\NormalTok{data[,}\StringTok{"LSOA11CD"}\NormalTok{],census_z[,}\StringTok{"GEO_CODE"}\NormalTok{]),])}
+\NormalTok{lsoaboundary_rep <-}\StringTok{ }\KeywordTok{spTransform}\NormalTok{(lsoaboundary, }\KeywordTok{CRS}\NormalTok{(}\StringTok{"+init=epsg:4326"}\NormalTok{))}
+\NormalTok{borough_rep <-}\StringTok{ }\KeywordTok{spTransform}\NormalTok{(borough,}\KeywordTok{CRS}\NormalTok{(}\StringTok{"+init=epsg:4326"}\NormalTok{))}
+
+\CommentTok{# perform moran's I test and add a column to the lsoa dataframe}
+\CommentTok{# create spatial weights}
+\NormalTok{coordsW <-}\StringTok{ }\KeywordTok{coordinates}\NormalTok{(lsoaboundary_rep)}
+\NormalTok{lsoa_nb <-}\StringTok{ }\KeywordTok{poly2nb}\NormalTok{(lsoaboundary_rep, }\DataTypeTok{queen=}\NormalTok{T)}
+\NormalTok{lsoa.lw <-}\StringTok{ }\KeywordTok{nb2listw}\NormalTok{(lsoa_nb, }\DataTypeTok{style=}\StringTok{"C"}\NormalTok{)}
+\CommentTok{# calculate Getis Ord General G}
+\NormalTok{lsoaboundary_rep}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{G_svi <-}\StringTok{ }\KeywordTok{localG}\NormalTok{(lsoaboundary_rep}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{svi, lsoa.lw)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# a function modifying the attribute table of lsoaboundary}
+\CommentTok{# arguments: weighting values (12)}
+\CommentTok{# output: an updated spatial polygon dataframe}
+
+\NormalTok{modifier <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10,x11,x12)\{}
+  \CommentTok{# re-calculate svi}
+\NormalTok{  lsoaboundary_rep}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{svi <-}\StringTok{ }\NormalTok{census_z[,}\DecValTok{2}\NormalTok{]}\OperatorTok{*}\NormalTok{x1}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{3}\NormalTok{]}\OperatorTok{*}\NormalTok{x2}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{4}\NormalTok{]}\OperatorTok{*}\NormalTok{x3}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{5}\NormalTok{]}\OperatorTok{*}\NormalTok{x4}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{6}\NormalTok{]}\OperatorTok{*}\NormalTok{x5}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{7}\NormalTok{]}\OperatorTok{*}\NormalTok{x6}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{8}\NormalTok{]}\OperatorTok{*}\NormalTok{x7}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{9}\NormalTok{]}\OperatorTok{*}\NormalTok{x8}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{10}\NormalTok{]}\OperatorTok{*}\NormalTok{x9}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{11}\NormalTok{]}\OperatorTok{*}\NormalTok{x10}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{12}\NormalTok{]}\OperatorTok{*}\NormalTok{x11}\OperatorTok{+}\NormalTok{census_z[,}\DecValTok{13}\NormalTok{]}\OperatorTok{*}\NormalTok{x12}
+  \CommentTok{# re-calculate Getis Ord General G}
+\NormalTok{  lsoaboundary_rep}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{G_svi <-}\StringTok{ }\KeywordTok{localG}\NormalTok{(lsoaboundary_rep}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{svi, lsoa.lw)}
+  \KeywordTok{return}\NormalTok{(lsoaboundary_rep)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# user interface}
+
+\KeywordTok{library}\NormalTok{(leaflet)}
+\KeywordTok{library}\NormalTok{(sp)}
+\KeywordTok{library}\NormalTok{(maptools)}
+\KeywordTok{library}\NormalTok{(rgdal)}
+\KeywordTok{library}\NormalTok{(shiny)}
+\KeywordTok{library}\NormalTok{(classInt)}
+\KeywordTok{library}\NormalTok{(RColorBrewer)}
+\KeywordTok{library}\NormalTok{(spdep)}
+
+\KeywordTok{shinyUI}\NormalTok{(}\KeywordTok{fluidPage}\NormalTok{(}
+  \CommentTok{# display maps and analysis results on the left}
+  \KeywordTok{column}\NormalTok{(}\DataTypeTok{width =} \DecValTok{9}\NormalTok{,}
+         \KeywordTok{helpText}\NormalTok{(}\StringTok{"SVI Map"}\NormalTok{),}
+         \KeywordTok{leafletOutput}\NormalTok{(}\StringTok{"map1"}\NormalTok{, }\DataTypeTok{height =} \DecValTok{500}\NormalTok{),}
+         \KeywordTok{br}\NormalTok{(),}
+         \KeywordTok{verbatimTextOutput}\NormalTok{(}\StringTok{"i_result"}\NormalTok{),}
+         \KeywordTok{helpText}\NormalTok{(}\StringTok{"Hot/Cold Spot of SVI"}\NormalTok{),}
+         \KeywordTok{leafletOutput}\NormalTok{(}\StringTok{"map3"}\NormalTok{,}\DataTypeTok{height =} \DecValTok{500}\NormalTok{)}
+\NormalTok{  ),}
+  \CommentTok{# control panel on the right}
+  \KeywordTok{column}\NormalTok{(}\DataTypeTok{width =} \DecValTok{3}\NormalTok{,}
+             \KeywordTok{h3}\NormalTok{(}\StringTok{"Set Weighting Values for Indicators"}\NormalTok{),}
+             \CommentTok{#add sliders for each variable}
+             \KeywordTok{sliderInput}\NormalTok{(}\StringTok{"x1"}\NormalTok{, }\StringTok{"Not Born in UK:"}\NormalTok{,}
+                         \DataTypeTok{min =} \DecValTok{0}\NormalTok{, }\DataTypeTok{max =} \DecValTok{1}\NormalTok{,}
+                         \DataTypeTok{value =} \DecValTok{1}\NormalTok{),}
+             \KeywordTok{sliderInput}\NormalTok{(}\StringTok{"x2"}\NormalTok{, }\StringTok{"English not Main Language:"}\NormalTok{,}
+                         \DataTypeTok{min =} \DecValTok{0}\NormalTok{, }\DataTypeTok{max =} \DecValTok{1}\NormalTok{,}
+                         \DataTypeTok{value =} \DecValTok{1}\NormalTok{),}
+             \KeywordTok{sliderInput}\NormalTok{(}\StringTok{"x3"}\NormalTok{, }\StringTok{"Social Rented Tenure:"}\NormalTok{,}
+                         \DataTypeTok{min =} \DecValTok{0}\NormalTok{, }\DataTypeTok{max =} \DecValTok{1}\NormalTok{,}
+                         \DataTypeTok{value =} \DecValTok{1}\NormalTok{),}
+             \KeywordTok{sliderInput}\NormalTok{(}\StringTok{"x4"}\NormalTok{, }\StringTok{"Private Rented Tenure:"}\NormalTok{,}
+                         \DataTypeTok{min =} \DecValTok{0}\NormalTok{, }\DataTypeTok{max =} \DecValTok{1}\NormalTok{,}
+                         \DataTypeTok{value =} \DecValTok{1}\NormalTok{),}
+             \KeywordTok{sliderInput}\NormalTok{(}\StringTok{"x5"}\NormalTok{, }\StringTok{"Unemployed Adults with Dependent Children:"}\NormalTok{,}
+                         \DataTypeTok{min =} \DecValTok{0}\NormalTok{, }\DataTypeTok{max =} \DecValTok{1}\NormalTok{,}
+                         \DataTypeTok{value =} \DecValTok{1}\NormalTok{),}
+             \KeywordTok{sliderInput}\NormalTok{(}\StringTok{"x6"}\NormalTok{, }\StringTok{"Unemployment Rate:"}\NormalTok{,}
+                         \DataTypeTok{min =} \DecValTok{0}\NormalTok{, }\DataTypeTok{max =} \DecValTok{1}\NormalTok{,}
+                         \DataTypeTok{value =} \DecValTok{1}\NormalTok{),}
+             \KeywordTok{sliderInput}\NormalTok{(}\StringTok{"x7"}\NormalTok{, }\StringTok{"Limited Activities:"}\NormalTok{,}
+                         \DataTypeTok{min =} \DecValTok{0}\NormalTok{, }\DataTypeTok{max =} \DecValTok{1}\NormalTok{,}
+                         \DataTypeTok{value =} \DecValTok{1}\NormalTok{),}
+             \KeywordTok{sliderInput}\NormalTok{(}\StringTok{"x8"}\NormalTok{, }\StringTok{"Bad Health:"}\NormalTok{,}
+                         \DataTypeTok{min =} \DecValTok{0}\NormalTok{, }\DataTypeTok{max =} \DecValTok{1}\NormalTok{,}
+                         \DataTypeTok{value =} \DecValTok{1}\NormalTok{),}
+             \KeywordTok{sliderInput}\NormalTok{(}\StringTok{"x9"}\NormalTok{, }\StringTok{"No Car/Van:"}\NormalTok{,}
+                         \DataTypeTok{min =} \DecValTok{0}\NormalTok{, }\DataTypeTok{max =} \DecValTok{1}\NormalTok{,}
+                         \DataTypeTok{value =} \DecValTok{1}\NormalTok{),}
+             \KeywordTok{sliderInput}\NormalTok{(}\StringTok{"x10"}\NormalTok{, }\StringTok{"Young Population:"}\NormalTok{,}
+                         \DataTypeTok{min =} \DecValTok{0}\NormalTok{, }\DataTypeTok{max =} \DecValTok{1}\NormalTok{,}
+                         \DataTypeTok{value =} \DecValTok{1}\NormalTok{),}
+             \KeywordTok{sliderInput}\NormalTok{(}\StringTok{"x11"}\NormalTok{, }\StringTok{"Elderly Population:"}\NormalTok{,}
+                         \DataTypeTok{min =} \DecValTok{0}\NormalTok{, }\DataTypeTok{max =} \DecValTok{1}\NormalTok{,}
+                         \DataTypeTok{value =} \DecValTok{1}\NormalTok{),}
+             \KeywordTok{sliderInput}\NormalTok{(}\StringTok{"x12"}\NormalTok{, }\StringTok{"New to UK:"}\NormalTok{,}
+                         \DataTypeTok{min =} \DecValTok{0}\NormalTok{, }\DataTypeTok{max =} \DecValTok{1}\NormalTok{,}
+                         \DataTypeTok{value =} \DecValTok{1}\NormalTok{),}
+             \KeywordTok{actionButton}\NormalTok{(}\StringTok{"getmap"}\NormalTok{,}\StringTok{"Get SVI Map"}\NormalTok{),}
+             \KeywordTok{actionButton}\NormalTok{(}\StringTok{"moransi"}\NormalTok{,}\StringTok{"Moran's I Test"}\NormalTok{)}
+\NormalTok{  )}
+  
+\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# shiny server}
+
+\KeywordTok{source}\NormalTok{(}\StringTok{"dataloader.r"}\NormalTok{)}
+\KeywordTok{source}\NormalTok{(}\StringTok{"modifier.r"}\NormalTok{)}
+
+\KeywordTok{shinyServer}\NormalTok{(}\ControlFlowTok{function}\NormalTok{(input, output, session)\{}
+  \CommentTok{# plot the svi map with borough boundaries}
+\NormalTok{  output}\OperatorTok{$}\NormalTok{map1 <-}\StringTok{ }\KeywordTok{renderLeaflet}\NormalTok{(\{}
+\NormalTok{    breaks <-}\StringTok{ }\KeywordTok{classIntervals}\NormalTok{(lsoaboundary_rep}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{svi, }\DataTypeTok{n=}\DecValTok{5}\NormalTok{, }\DataTypeTok{style=}\StringTok{"quantile"}\NormalTok{)}\OperatorTok{$}\NormalTok{brks}
+\NormalTok{    pal <-}\StringTok{ }\KeywordTok{colorBin}\NormalTok{(}
+      \DataTypeTok{palette =} \StringTok{"YlOrBr"}\NormalTok{,}
+      \DataTypeTok{domain =}\NormalTok{ lsoaboundary_rep}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{svi,}
+      \DataTypeTok{bins =}\NormalTok{ breaks)}
+\NormalTok{    labels_lsoa <-}\StringTok{ }\KeywordTok{sprintf}\NormalTok{(}
+      \StringTok{"%s"}\NormalTok{,}
+\NormalTok{      lsoaboundary_rep}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{LSOA11NM}
+\NormalTok{    ) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{lapply}\NormalTok{(htmltools}\OperatorTok{::}\NormalTok{HTML)}
+\NormalTok{    labels_br <-}\StringTok{ }\KeywordTok{sprintf}\NormalTok{(}
+      \StringTok{"%s"}\NormalTok{,}
+\NormalTok{      borough_rep}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{name}
+\NormalTok{    ) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{lapply}\NormalTok{(htmltools}\OperatorTok{::}\NormalTok{HTML)}
+  
+    \KeywordTok{leaflet}\NormalTok{(lsoaboundary_rep) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{      }\KeywordTok{addPolygons}\NormalTok{(}
+        \DataTypeTok{fillColor =} \OperatorTok{~}\KeywordTok{pal}\NormalTok{(lsoaboundary_rep}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{svi),}
+        \DataTypeTok{fillOpacity =} \DecValTok{1}\NormalTok{,}
+        \DataTypeTok{smoothFactor =} \DecValTok{0}\NormalTok{,}
+        \DataTypeTok{stroke =}\NormalTok{ F,}
+        \DataTypeTok{label =}\NormalTok{ labels_lsoa}
+\NormalTok{      ) }\OperatorTok{%>%}
+\StringTok{      }\KeywordTok{addPolygons}\NormalTok{(}
+        \DataTypeTok{data =}\NormalTok{ borough_rep,}
+        \DataTypeTok{group =} \StringTok{"London Borough"}\NormalTok{,}
+        \DataTypeTok{fillOpacity =} \DecValTok{0}\NormalTok{,}
+        \DataTypeTok{color =} \StringTok{"white"}\NormalTok{,}
+        \DataTypeTok{opacity =} \DecValTok{1}\NormalTok{,}
+        \DataTypeTok{weight =} \DecValTok{3}\NormalTok{,}
+        \DataTypeTok{smoothFactor =} \FloatTok{0.5}\NormalTok{,}
+        \DataTypeTok{label =}\NormalTok{ labels_br,}
+        \DataTypeTok{highlight =} \KeywordTok{highlightOptions}\NormalTok{(}
+          \DataTypeTok{weight =} \DecValTok{5}\NormalTok{,}
+          \DataTypeTok{color =} \StringTok{"#666"}\NormalTok{,}
+          \DataTypeTok{opacity =} \DecValTok{1}\NormalTok{,}
+          \DataTypeTok{fillOpacity =} \DecValTok{0}\NormalTok{,}
+          \DataTypeTok{bringToFront =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{      ) }\OperatorTok{%>%}
+\StringTok{      }\KeywordTok{addProviderTiles}\NormalTok{(}\StringTok{"CartoDB.DarkMatterNoLabels"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{      }\KeywordTok{addLegend}\NormalTok{(}\DataTypeTok{pal =}\NormalTok{ pal,}
+                \DataTypeTok{values =} \OperatorTok{~}\NormalTok{lsoaboundary_rep}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{svi,}
+                \DataTypeTok{title =} \StringTok{"Social Vulnerability Index"}\NormalTok{,}
+                \DataTypeTok{position =} \StringTok{"bottomleft"}\NormalTok{,}
+                \DataTypeTok{opacity =} \DecValTok{1}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{      }\KeywordTok{addLayersControl}\NormalTok{(}
+        \DataTypeTok{overlayGroups =} \KeywordTok{c}\NormalTok{(}\StringTok{"London Borough"}\NormalTok{),}
+        \DataTypeTok{options =} \KeywordTok{layersControlOptions}\NormalTok{(}\DataTypeTok{collapsed =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{      ) }
+\NormalTok{  \})}
+
+  \CommentTok{# plot the Gi* map}
+\NormalTok{  output}\OperatorTok{$}\NormalTok{map3 <-}\StringTok{ }\KeywordTok{renderLeaflet}\NormalTok{(\{}
+\NormalTok{    breaks1 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{1000}\NormalTok{,}\OperatorTok{-}\FloatTok{2.58}\NormalTok{,}\OperatorTok{-}\FloatTok{1.96}\NormalTok{,}\OperatorTok{-}\FloatTok{1.65}\NormalTok{,}\FloatTok{1.65}\NormalTok{,}\FloatTok{1.96}\NormalTok{,}\FloatTok{2.58}\NormalTok{,}\DecValTok{1000}\NormalTok{)}
+\NormalTok{    pal_g <-}\StringTok{ }\KeywordTok{colorBin}\NormalTok{(}
+      \DataTypeTok{palette =} \StringTok{"RdBu"}\NormalTok{,}
+      \DataTypeTok{domain =}\NormalTok{ lsoaboundary_rep}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{G_svi,}
+      \DataTypeTok{bins =}\NormalTok{ breaks1,}
+      \DataTypeTok{reverse =} \OtherTok{TRUE}\NormalTok{)}
+    \KeywordTok{leaflet}\NormalTok{(lsoaboundary_rep) }\OperatorTok{%>%}
+\StringTok{      }\KeywordTok{addPolygons}\NormalTok{(}
+        \DataTypeTok{fillColor =} \OperatorTok{~}\KeywordTok{pal_g}\NormalTok{(lsoaboundary_rep}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{G_svi),}
+        \DataTypeTok{fillOpacity =} \DecValTok{1}\NormalTok{,}
+        \DataTypeTok{smoothFactor =} \DecValTok{0}\NormalTok{,}
+        \DataTypeTok{stroke =}\NormalTok{ F}
+\NormalTok{      ) }\OperatorTok{%>%}
+\StringTok{      }\KeywordTok{addLegend}\NormalTok{(}
+        \DataTypeTok{pal =}\NormalTok{ pal_g,}
+        \DataTypeTok{values =} \OperatorTok{~}\NormalTok{lsoaboundary_rep}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{I_svi,}
+        \DataTypeTok{title =} \StringTok{"GI*,SVI"}\NormalTok{,}
+        \DataTypeTok{position =} \StringTok{"bottomleft"}\NormalTok{,}
+        \DataTypeTok{opacity =} \DecValTok{1}
+\NormalTok{      ) }\OperatorTok{%>%}
+\StringTok{      }\KeywordTok{addProviderTiles}\NormalTok{(}\StringTok{"Esri.WorldGrayCanvas"}\NormalTok{)}
+\NormalTok{  \})}
+
+  \CommentTok{# modify the lsoa attribute table}
+\NormalTok{  lsoaboundary_new <-}\StringTok{ }\KeywordTok{eventReactive}\NormalTok{(input}\OperatorTok{$}\NormalTok{getmap,\{}
+    \KeywordTok{modifier}\NormalTok{(}\DataTypeTok{x1=}\NormalTok{input}\OperatorTok{$}\NormalTok{x1,}\DataTypeTok{x2=}\NormalTok{input}\OperatorTok{$}\NormalTok{x2,}\DataTypeTok{x3=}\NormalTok{input}\OperatorTok{$}\NormalTok{x3,}\DataTypeTok{x4=}\NormalTok{input}\OperatorTok{$}\NormalTok{x4,}\DataTypeTok{x5=}\NormalTok{input}\OperatorTok{$}\NormalTok{x5,}\DataTypeTok{x6=}\NormalTok{input}\OperatorTok{$}\NormalTok{x6,}\DataTypeTok{x7=}\NormalTok{input}\OperatorTok{$}\NormalTok{x7,}\DataTypeTok{x8=}\NormalTok{input}\OperatorTok{$}\NormalTok{x8,}\DataTypeTok{x9=}\NormalTok{input}\OperatorTok{$}\NormalTok{x9,}\DataTypeTok{x10=}\NormalTok{input}\OperatorTok{$}\NormalTok{x10,}\DataTypeTok{x11=}\NormalTok{input}\OperatorTok{$}\NormalTok{x11,}\DataTypeTok{x12=}\NormalTok{input}\OperatorTok{$}\NormalTok{x12)}
+\NormalTok{  \})}
+  \CommentTok{# display the moran's i test result}
+\NormalTok{  iresult <-}\StringTok{ }\KeywordTok{eventReactive}\NormalTok{(input}\OperatorTok{$}\NormalTok{moransi,\{}
+    \KeywordTok{moran.test}\NormalTok{(}\KeywordTok{lsoaboundary_new}\NormalTok{()}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{svi, lsoa.lw)}
+\NormalTok{  \})}
+\NormalTok{  output}\OperatorTok{$}\NormalTok{i_result <-}\StringTok{ }\KeywordTok{renderPrint}\NormalTok{(\{}
+    \KeywordTok{iresult}\NormalTok{()}
+\NormalTok{  \})}
+  
+  \CommentTok{# observer to redraw the maps}
+  \KeywordTok{observe}\NormalTok{(\{}
+\NormalTok{    breaks <-}\StringTok{ }\KeywordTok{classIntervals}\NormalTok{(}\KeywordTok{lsoaboundary_new}\NormalTok{()}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{svi, }\DataTypeTok{n=}\DecValTok{5}\NormalTok{, }\DataTypeTok{style=}\StringTok{"quantile"}\NormalTok{)}\OperatorTok{$}\NormalTok{brks}
+\NormalTok{    pal <-}\StringTok{ }\KeywordTok{colorBin}\NormalTok{(}
+      \DataTypeTok{palette =} \StringTok{"YlOrBr"}\NormalTok{,}
+      \DataTypeTok{domain =} \KeywordTok{lsoaboundary_new}\NormalTok{()}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{svi,}
+      \DataTypeTok{bins =}\NormalTok{ breaks}
+\NormalTok{    )}
+\NormalTok{    labels <-}\StringTok{ }\KeywordTok{sprintf}\NormalTok{(}
+      \StringTok{"%s"}\NormalTok{,}
+\NormalTok{      lsoaboundary_rep}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{LSOA11NM}
+\NormalTok{    ) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{lapply}\NormalTok{(htmltools}\OperatorTok{::}\NormalTok{HTML)}
+\NormalTok{    labels_br <-}\StringTok{ }\KeywordTok{sprintf}\NormalTok{(}
+      \StringTok{"%s"}\NormalTok{,}
+\NormalTok{      borough_rep}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{name}
+\NormalTok{    ) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{lapply}\NormalTok{(htmltools}\OperatorTok{::}\NormalTok{HTML)}
+    
+    \KeywordTok{leafletProxy}\NormalTok{(}\StringTok{"map1"}\NormalTok{, }\DataTypeTok{data =} \KeywordTok{lsoaboundary_new}\NormalTok{()) }\OperatorTok{%>%}
+\StringTok{      }\KeywordTok{clearShapes}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{      }\KeywordTok{addPolygons}\NormalTok{(}
+        \DataTypeTok{fillColor =} \OperatorTok{~}\KeywordTok{pal}\NormalTok{(}\KeywordTok{lsoaboundary_new}\NormalTok{()}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{svi),}
+        \DataTypeTok{fillOpacity =} \DecValTok{1}\NormalTok{,}
+        \DataTypeTok{smoothFactor =} \DecValTok{0}\NormalTok{,}
+        \DataTypeTok{stroke =}\NormalTok{ F,}
+        \DataTypeTok{label =}\NormalTok{ labels}
+\NormalTok{      ) }\OperatorTok{%>%}
+\StringTok{    }\KeywordTok{addPolygons}\NormalTok{(}
+      \DataTypeTok{data =}\NormalTok{ borough_rep,}
+      \DataTypeTok{group =} \StringTok{"London Borough"}\NormalTok{,}
+      \DataTypeTok{fillOpacity =} \DecValTok{0}\NormalTok{,}
+      \DataTypeTok{color =} \StringTok{"white"}\NormalTok{,}
+      \DataTypeTok{opacity =} \DecValTok{1}\NormalTok{,}
+      \DataTypeTok{weight =} \DecValTok{3}\NormalTok{,}
+      \DataTypeTok{smoothFactor =} \FloatTok{0.5}\NormalTok{,}
+      \DataTypeTok{label =}\NormalTok{ labels_br,}
+      \DataTypeTok{highlight =} \KeywordTok{highlightOptions}\NormalTok{(}
+        \DataTypeTok{weight =} \DecValTok{5}\NormalTok{,}
+        \DataTypeTok{color =} \StringTok{"#666"}\NormalTok{,}
+        \DataTypeTok{opacity =} \DecValTok{1}\NormalTok{,}
+        \DataTypeTok{fillOpacity =} \DecValTok{0}\NormalTok{,}
+        \DataTypeTok{bringToFront =} \OtherTok{TRUE}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{      }\KeywordTok{addLayersControl}\NormalTok{(}
+        \DataTypeTok{overlayGroups =} \KeywordTok{c}\NormalTok{(}\StringTok{"London Borough"}\NormalTok{),}
+        \DataTypeTok{options =} \KeywordTok{layersControlOptions}\NormalTok{(}\DataTypeTok{collapsed =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{      )}
+    
+\NormalTok{  \})}
+  \KeywordTok{observe}\NormalTok{(\{}
+\NormalTok{    breaks <-}\StringTok{ }\KeywordTok{classIntervals}\NormalTok{(}\KeywordTok{lsoaboundary_new}\NormalTok{()}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{svi, }\DataTypeTok{n=}\DecValTok{5}\NormalTok{, }\DataTypeTok{style=}\StringTok{"quantile"}\NormalTok{)}\OperatorTok{$}\NormalTok{brks}
+\NormalTok{    pal <-}\StringTok{ }\KeywordTok{colorBin}\NormalTok{(}
+      \DataTypeTok{palette =} \StringTok{"YlOrBr"}\NormalTok{,}
+      \DataTypeTok{domain =} \KeywordTok{lsoaboundary_new}\NormalTok{()}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{svi,}
+      \DataTypeTok{bins =}\NormalTok{ breaks}
+\NormalTok{    )}
+\NormalTok{    proxy <-}\StringTok{ }\KeywordTok{leafletProxy}\NormalTok{(}\StringTok{"map1"}\NormalTok{, }\DataTypeTok{data =} \KeywordTok{lsoaboundary_new}\NormalTok{())}
+\NormalTok{    proxy }\OperatorTok{%>%}\StringTok{ }\KeywordTok{clearControls}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{      }\KeywordTok{addLegend}\NormalTok{(}\DataTypeTok{pal =}\NormalTok{ pal,}
+                \DataTypeTok{values =} \OperatorTok{~}\KeywordTok{lsoaboundary_new}\NormalTok{()}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{svi,}
+                \DataTypeTok{title =} \StringTok{"Social Vulnerability Index"}\NormalTok{,}
+                \DataTypeTok{position =} \StringTok{"bottomleft"}\NormalTok{,}
+                \DataTypeTok{opacity =} \DecValTok{1}\NormalTok{)}
+\NormalTok{  \})}
+ 
+  \KeywordTok{observe}\NormalTok{(\{}
+\NormalTok{    breaks1 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{1000}\NormalTok{,}\OperatorTok{-}\FloatTok{2.58}\NormalTok{,}\OperatorTok{-}\FloatTok{1.96}\NormalTok{,}\OperatorTok{-}\FloatTok{1.65}\NormalTok{,}\FloatTok{1.65}\NormalTok{,}\FloatTok{1.96}\NormalTok{,}\FloatTok{2.58}\NormalTok{,}\DecValTok{1000}\NormalTok{)}
+\NormalTok{    pal_g <-}\StringTok{ }\KeywordTok{colorBin}\NormalTok{(}
+      \DataTypeTok{palette =} \StringTok{"RdBu"}\NormalTok{,}
+      \DataTypeTok{domain =} \KeywordTok{lsoaboundary_new}\NormalTok{()}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{G_svi,}
+      \DataTypeTok{bins =}\NormalTok{ breaks1,}
+      \DataTypeTok{reverse =} \OtherTok{TRUE}\NormalTok{)}
+    \KeywordTok{leafletProxy}\NormalTok{(}\StringTok{"map3"}\NormalTok{, }\DataTypeTok{data =} \KeywordTok{lsoaboundary_new}\NormalTok{()) }\OperatorTok{%>%}
+\StringTok{      }\KeywordTok{clearShapes}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{      }\KeywordTok{addPolygons}\NormalTok{(}
+        \DataTypeTok{fillColor =} \OperatorTok{~}\KeywordTok{pal_g}\NormalTok{(}\KeywordTok{lsoaboundary_new}\NormalTok{()}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{G_svi),}
+        \DataTypeTok{fillOpacity =} \DecValTok{1}\NormalTok{,}
+        \DataTypeTok{smoothFactor =} \DecValTok{0}\NormalTok{,}
+        \DataTypeTok{stroke =}\NormalTok{ F}
+\NormalTok{      ) }\OperatorTok{%>%}
+\StringTok{      }\KeywordTok{addProviderTiles}\NormalTok{(}\StringTok{"Esri.WorldGrayCanvas"}\NormalTok{)}
+\NormalTok{  \})}
+  \KeywordTok{observe}\NormalTok{(\{}
+\NormalTok{    breaks1 <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{1000}\NormalTok{,}\OperatorTok{-}\FloatTok{2.58}\NormalTok{,}\OperatorTok{-}\FloatTok{1.96}\NormalTok{,}\OperatorTok{-}\FloatTok{1.65}\NormalTok{,}\FloatTok{1.65}\NormalTok{,}\FloatTok{1.96}\NormalTok{,}\FloatTok{2.58}\NormalTok{,}\DecValTok{1000}\NormalTok{)}
+\NormalTok{    pal_g <-}\StringTok{ }\KeywordTok{colorBin}\NormalTok{(}
+      \DataTypeTok{palette =} \StringTok{"RdBu"}\NormalTok{,}
+      \DataTypeTok{domain =} \KeywordTok{lsoaboundary_new}\NormalTok{()}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{G_svi,}
+      \DataTypeTok{bins =}\NormalTok{ breaks1,}
+      \DataTypeTok{reverse =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{    proxy <-}\StringTok{ }\KeywordTok{leafletProxy}\NormalTok{(}\StringTok{"map3"}\NormalTok{, }\DataTypeTok{data =} \KeywordTok{lsoaboundary_new}\NormalTok{())}
+\NormalTok{    proxy }\OperatorTok{%>%}\StringTok{ }\KeywordTok{clearControls}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{    }\KeywordTok{addLegend}\NormalTok{(}
+      \DataTypeTok{pal =}\NormalTok{ pal_g,}
+      \DataTypeTok{values =} \OperatorTok{~}\KeywordTok{lsoaboundary_new}\NormalTok{()}\OperatorTok{@}\NormalTok{data}\OperatorTok{$}\NormalTok{I_svi,}
+      \DataTypeTok{title =} \StringTok{"GI*,SVI"}\NormalTok{,}
+      \DataTypeTok{position =} \StringTok{"bottomleft"}\NormalTok{,}
+      \DataTypeTok{opacity =} \DecValTok{1}
+\NormalTok{    )}
+\NormalTok{  \})}
+
+\NormalTok{\})}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}
