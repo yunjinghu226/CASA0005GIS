@@ -3,7 +3,6 @@
 source("dataloader.r")
 source("modifier.r")
 
-
 shinyServer(function(input, output, session){
   # plot the svi map with borough boundaries
   output$map1 <- renderLeaflet({

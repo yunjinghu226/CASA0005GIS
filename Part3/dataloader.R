@@ -1,5 +1,5 @@
 # This file load necessary data
-# 1. cleans the original census data and produces a dataframe of z-scores for each variable involved
+# 1. cleans the original census data and produces a dataframe of z-scores for each variable involved, then calculate the svi by adding all zscores, calculate a localG
 # 2. read in the shapefile of lsoa boundaries and clean it
 
 # load library
@@ -45,8 +45,6 @@ borough_rep <- spTransform(borough,CRS("+init=epsg:4326"))
 coordsW <- coordinates(lsoaboundary_rep)
 lsoa_nb <- poly2nb(lsoaboundary_rep, queen=T)
 lsoa.lw <- nb2listw(lsoa_nb, style="C")
-# calculate moran's I
-lsoaboundary_rep@data$I_svi <- localmoran(lsoaboundary_rep@data$svi, lsoa.lw)[,4]
 # calculate Getis Ord General G
 lsoaboundary_rep@data$G_svi <- localG(lsoaboundary_rep@data$svi, lsoa.lw)
 
