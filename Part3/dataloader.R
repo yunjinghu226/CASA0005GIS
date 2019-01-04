@@ -40,5 +40,13 @@ lsoaboundary@data <- data.frame(lsoaboundary@data,census_z[match(lsoaboundary@da
 lsoaboundary_rep <- spTransform(lsoaboundary, CRS("+init=epsg:4326"))
 borough_rep <- spTransform(borough,CRS("+init=epsg:4326"))
 
-# write the new dataframe and save as csv
-# write.csv(census_z,file = paste(wd,"/variable_zscore_svi.csv",sep = ""))
+# perform moran's I test and add a column to the lsoa dataframe
+# create spatial weights
+coordsW <- coordinates(lsoaboundary_rep)
+lsoa_nb <- poly2nb(lsoaboundary_rep, queen=T)
+lsoa.lw <- nb2listw(lsoa_nb, style="C")
+# calculate moran's I
+lsoaboundary_rep@data$I_svi <- localmoran(lsoaboundary_rep@data$svi, lsoa.lw)[,4]
+# calculate Getis Ord General G
+lsoaboundary_rep@data$G_svi <- localG(lsoaboundary_rep@data$svi, lsoa.lw)
+
